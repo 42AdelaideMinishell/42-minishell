@@ -1,22 +1,45 @@
 #include "../inc/minishell.h"
 
-int main(void)
+void	signal_handler(int signum)
 {
-	int i;
-	char *input = readline("minishell > ");
-
-	i = 0;
-    printf("You entered: %s\n", input);
-	add_history(input);
-	while (i < 3)
+	if (signum == SIGINT)
 	{
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		printf("\n");
+	}
+}
+
+void	input_check(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == EOF)
+			exit(0);
 		i++;
 	}
-    free(input);
+}
+
+int main(void)
+{
+	// signal
+	// ctrl+c
+	signal(SIGINT, signal_handler);
+	// ctrl+\""
+	signal(SIGQUIT, SIG_IGN);
+
+	while (1)
+	{
+		g_input = readline("minishell > ");
+		// ctrl+d
+		if (!g_input)
+			exit(0);
+		printf("You entered: %s\n", g_input);
+		add_history(g_input);
+	}
 	return (0);
 }
