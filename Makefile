@@ -1,13 +1,15 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
-LIBRARY = -lft
+LIBRARY = -lft -lreadline
 
 ROOT_DIR = ${shell pwd}
 LIBFT_DIR = ${ROOT_DIR}/libft
+RL_DIR = /usr/local/opt/readline/lib
 
 SRCS = ./src/*.c
 INCS = ./inc
+RL_INCS = /usr/local/opt/readline/include/
 
 NAME = minishell
 
@@ -16,7 +18,7 @@ ${NAME}: all
 all:
 	@echo "Complie libft..."
 	@make -C ${LIBFT_DIR}
-	@${CC} ${CFLAGS} -I ${INCS} ${SRCS} -o ${NAME} -L${LIBFT_DIR} ${LIBRARY}
+	@${CC} ${CFLAGS} -I ${INCS} -I ${RL_INCS} ${SRCS} -o ${NAME} -L${LIBFT_DIR} -L$(RL_DIR) ${LIBRARY}
 	@echo "./${NAME} Complie successfully"
 
 clean:
