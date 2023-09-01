@@ -11,35 +11,41 @@ void	signal_handler(int signum)
 	}
 }
 
-void	input_check(char *input)
+// init term control to not show ^C
+void	new_term_init(void)
 {
-	int	i;
+	struct termios	new_term;
 
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == EOF)
-			exit(0);
-		i++;
-	}
+	tcgetattr(STDIN_FILENO, &new_term);
+	new_term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
 }
 
 int main(void)
 {
-	// signal
+	char			*rl;
+	struct termios	old_term;
+	pid_t			pid;
+
 	// ctrl+c
 	signal(SIGINT, signal_handler);
-	// ctrl+\""
+	// "ctrl+\"
 	signal(SIGQUIT, SIG_IGN);
 
+	// termios
+	tcgetattr(STDIN_FILENO, &old_term);
+	new_term_init();
 	while (1)
 	{
-		g_input = readline("minishell > ");
+		rl = readline("minishell $ ");
 		// ctrl+d
-		if (!g_input)
-			exit(0);
-		printf("You entered: %s\n", g_input);
-		add_history(g_input);
+		if (!rl)
+			break ;
+		add_history(rl);
+		printf("You entered: %s\n", rl);
+		free(rl);
 	}
+	// Gets back to original terminal setting
+	tcsetattr(STDERR_FILENO, TCSANOW, &old_term);
 	return (0);
 }

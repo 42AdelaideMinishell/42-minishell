@@ -13,12 +13,16 @@ RL_INCS = /usr/local/opt/readline/include/
 
 NAME = minishell
 
+# For Jae's laptop
+RL_DIR2= /opt/homebrew/Cellar/readline/8.2.1/lib
+RL_INCS2 = /opt/homebrew/Cellar/readline/8.2.1/include
+
 ${NAME}: all
 
 all:
 	@echo "Complie libft..."
 	@make -C ${LIBFT_DIR}
-	@${CC} ${CFLAGS} -I ${INCS} -I ${RL_INCS} ${SRCS} -o ${NAME} -L${LIBFT_DIR} -L$(RL_DIR) ${LIBRARY}
+	@${CC} ${CFLAGS} -I ${INCS} -I ${RL_INCS2} ${SRCS} -o ${NAME} -L${LIBFT_DIR} -L$(RL_DIR2) ${LIBRARY}
 	@echo "./${NAME} Complie successfully"
 
 clean:

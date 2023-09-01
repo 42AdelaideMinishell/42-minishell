@@ -13,6 +13,4 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-char	*g_input;
-
 #endif
