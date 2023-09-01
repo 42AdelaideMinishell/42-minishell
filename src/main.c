@@ -25,7 +25,7 @@ int main(void)
 {
 	char			*rl;
 	struct termios	old_term;
-	pid_t			pid;
+	// pid_t			pid;
 
 	// ctrl+c
 	signal(SIGINT, signal_handler);
@@ -37,10 +37,12 @@ int main(void)
 	new_term_init();
 	while (1)
 	{
-		rl = readline("minishell $ ");
+		rl = readline("✅ minishell $ ");
 		// ctrl+d
 		if (!rl)
 			break ;
+		if (rl[0] == '\0')
+			continue ;
 		add_history(rl);
 		printf("You entered: %s\n", rl);
 		free(rl);

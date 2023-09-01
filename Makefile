@@ -19,10 +19,16 @@ RL_INCS2 = /opt/homebrew/Cellar/readline/8.2.1/include
 
 ${NAME}: all
 
-all:
+jae:
 	@echo "Complie libft..."
 	@make -C ${LIBFT_DIR}
 	@${CC} ${CFLAGS} -I ${INCS} -I ${RL_INCS2} ${SRCS} -o ${NAME} -L${LIBFT_DIR} -L$(RL_DIR2) ${LIBRARY}
+	@echo "./${NAME} Complie successfully"
+
+all:
+	@echo "Complie libft..."
+	@make -C ${LIBFT_DIR}
+	@${CC} ${CFLAGS} -I ${INCS} -I ${RL_INCS} ${SRCS} -o ${NAME} -L${LIBFT_DIR} -L$(RL_DIR) ${LIBRARY}
 	@echo "./${NAME} Complie successfully"
 
 clean:
@@ -37,4 +43,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+rejae: fclean jae
+
+.PHONY: jae all clean fclean re rejae
