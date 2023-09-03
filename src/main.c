@@ -4,17 +4,15 @@ int main(int argc, char **argv, char **envp)
 {
 	char	*rl;
 
-	if (argc != 1)
-		exit(1);
+	argc_error(argc);
 	(void)argv;
-	// signal
 	init_signal();
 	// termios
 	old_term(GET);
 	new_term();
 	while (1)
 	{
-		rl = readline("4️⃣ 2️⃣ MINISHELL % ");
+		rl = readline("4️⃣ 2️⃣ minishell % ");
 		// ctrl+d
 		if (!rl)
 			break ;
