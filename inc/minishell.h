@@ -31,7 +31,7 @@ void	execute(char *cmd, char **envp);
 
 // Terminal input output setting
 void	new_term(void);
-void	old_term(int get_set);
+void	old_term(int get_set, struct termios *old_term);
 
 // Signal
 void	signal_handler(int signum);

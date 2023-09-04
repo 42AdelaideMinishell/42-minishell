@@ -11,12 +11,10 @@ void	new_term(void)
 }
 
 // keeps the old term setting
-void	old_term(int get_set)
+void	old_term(int get_set, struct termios *old_term)
 {
-	struct termios	old_term;
-
 	if (get_set == GET)
-		tcgetattr(STDIN_FILENO, &old_term);
+		tcgetattr(STDIN_FILENO, old_term);
 	else if (get_set == SET)
-		tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
+		tcsetattr(STDIN_FILENO, TCSANOW, old_term);
 }
