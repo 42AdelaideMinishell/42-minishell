@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:36 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 15:08:37 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/04 21:10:51 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 // init term control to not show ^C
 void	new_term(void)

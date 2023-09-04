@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 15:08:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/04 22:37:21 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 // handles ctrl+c during operations
 void	wait_child(int status)
@@ -19,7 +19,6 @@ void	wait_child(int status)
 
 	if (WIFSIGNALED(status))
 	{
-		// WTERMSIG to figure out which signal has been received
 		signal = WTERMSIG(status);
 		if (signal == SIGINT)
 			ft_putendl_fd("^C", 2);
