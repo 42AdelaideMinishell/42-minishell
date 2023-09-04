@@ -82,7 +82,7 @@ void	execute(char *cmd, char **envp)
 	result = execve(path, split_cmd, envp);
 	if (result == -1)
 	{
-		ft_putstr_fd("minishell: command not found: ", 2);
+		ft_putstr_fd("🔴  4️⃣ 2️⃣ minishell: command not found: ", 2);
 		ft_putendl_fd(split_cmd[0], 2);
 		free_container(split_cmd);
 		exit(1);
