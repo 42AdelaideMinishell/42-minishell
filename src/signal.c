@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/04 15:08:31 by jaeshin           #+#    #+#             */
+/*   Updated: 2023/09/04 15:08:32 by jaeshin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 void	signal_handler(int signum)
@@ -16,11 +28,10 @@ void	signal_handler(int signum)
 	}
 }
 
+// "ctrl+c ctrl+\"
 void	init_signal(void)
 {
-	// ctrl+c
 	signal(SIGINT, signal_handler);
-	// "ctrl+\"
 	signal(SIGQUIT, signal_handler);
 }
 

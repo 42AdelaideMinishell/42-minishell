@@ -41,4 +41,7 @@ void	signal_ignore(void);
 // Process
 void	handle_process(char *rl, char **envp);
 
+// Utiles
+char	**minishell_split(char const *s, char c);
+
 #endif
