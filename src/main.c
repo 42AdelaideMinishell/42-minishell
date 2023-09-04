@@ -21,8 +21,7 @@ int main(int argc, char **argv, char **envp)
 	}
 	while (1)
 	{
-		rl = readline("🟢  4️⃣ 2️⃣ minishell % ");
-		// ctrl+d
+		rl = readline("🟢 4️⃣ 2️⃣ minishell % ");
 		if (!rl)
 			break ;
 		if (rl[0] == '\0')

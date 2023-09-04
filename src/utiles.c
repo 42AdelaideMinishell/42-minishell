@@ -6,13 +6,13 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:23:29 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 15:07:35 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/04 20:28:52 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	get_size(char const *s, char c)
+static int	get_size(char const *s)
 {
 	int		i;
 	int		size;
@@ -21,8 +21,8 @@ static int	get_size(char const *s, char c)
 	size = 0;
 	while (s[i])
 	{
-		if ((s[i] != c && s[i] != '\0' && s[i + 1] == c)
-			|| (s[i] != c && s[i] != '\0' && s[i + 1] == '\0')
+		if ((s[i] != ' ' && s[i] != '\0' && s[i + 1] == ' ')
+			|| (s[i] != ' ' && s[i] != '\0' && s[i + 1] == '\0')
 			|| (s[i] != '\'' && s[i] != '\0' && s[i + 1] == '\0')
 			|| (s[i] != '\"' && s[i] != '\0' && s[i + 1] == '\0'))
 			size++;
@@ -31,7 +31,7 @@ static int	get_size(char const *s, char c)
 	return (size);
 }
 
-static void	copy(char const *s, char c, char **res)
+static void	copy(char const *s, char **res)
 {
 	int	i;
 	int	size;
@@ -40,7 +40,7 @@ static void	copy(char const *s, char c, char **res)
 	while (*s)
 	{
 		i = 0;
-		while ((s[i] != c) && (s[i] != '\'')
+		while ((s[i] != ' ') && (s[i] != '\'')
 			&& (s[i] != '\"') && (s[i] != '\0'))
 			i++;
 		res[size] = malloc((i + 1) * sizeof(char));
@@ -48,16 +48,16 @@ static void	copy(char const *s, char c, char **res)
 		{
 			res[size][i] = '\0';
 			ft_memcpy(res[size], s, i);
-			while (*s != c && *s != '\0')
+			while (*s != ' ' && *s != '\0')
 				s++;
-			while ((*s == c || *s == '\'' || *s == '\"') && c != '\0')
+			while ((*s == ' ' || *s == '\'' || *s == '\"'))
 				s++;
 			size++;
 		}
 	}
 }
 
-char	**minishell_split(char const *s, char c)
+char	**space_quotes_split(char const *s)
 {
 	char	**res;
 	int		size;
@@ -68,14 +68,14 @@ char	**minishell_split(char const *s, char c)
 		res[0] = NULL;
 		return (res);
 	}
-	while (*s == c || *s == '\'' || *s == '\"')
+	while (*s == ' ' || *s == '\'' || *s == '\"')
 		s++;
-	size = get_size(s, c);
+	size = get_size(s);
 	res = malloc((size + 1) * sizeof(char *));
 	if (res != NULL)
 	{
 		res[size] = NULL;
-		copy(s, c, res);
+		copy(s, res);
 	}
 	return (res);
 }

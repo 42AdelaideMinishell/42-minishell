@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:31 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 15:08:32 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/04 21:10:48 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	signal_handler(int signum)
 {
