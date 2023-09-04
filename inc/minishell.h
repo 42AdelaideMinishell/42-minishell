@@ -55,4 +55,7 @@ int	handle_else(char **split_cmd, t_cmd *cmd_args);
 // Initial command
 t_cmd	*initial_cmd(char **envp);
 
+// Utiles
+char	**minishell_split(char const *s, char c);
+
 #endif
