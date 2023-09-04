@@ -83,21 +83,26 @@ char	*get_path(char *cmd, char **envp)
 }
 
 // tries to run the command, if it doesn't work, returns the error message.
-void	execute(char *cmd, char **envp)
+void	execute(char *cmd, t_cmd *cmd_args)
 {
 	char	**split_cmd;
-	char	*path;
 	int		result;
 
-	split_cmd = minishell_split(cmd, ' ');
-	path = get_path(split_cmd[0], envp);
-	result = execve(path, split_cmd, envp);
-	if (result == -1)
+	split_cmd = ft_split(cmd, ' ');
+	result = 0;
+	if (ft_strncmp(split_cmd[0], "cd", sizeof(split_cmd[0])) == 0)
+		result = handle_cd(split_cmd, cmd_args);
+	// PWD edit can be here
+	else if (ft_strncmp(split_cmd[0], "pwd", sizeof(split_cmd[0])) == 0)
+		printf("%s\n", cmd_args->abs_path);
+	else if (ft_strncmp(split_cmd[0], "unset", sizeof(split_cmd[0])) == 0
+		&& ft_strncmp(split_cmd[1], "PATH", sizeof(split_cmd[0])) == 0)
+		cmd_args->envp = NULL;
+	else
 	{
-		ft_putstr_fd("🔴  4️⃣ 2️⃣ minishell: command not found: ", 2);
-		ft_putendl_fd(split_cmd[0], 2);
-		free_container(split_cmd);
-		exit(1);
+		printf("%s\n", cmd_args->envp[0]);
+		result = handle_else(split_cmd, cmd_args);
 	}
+	result_error(result, split_cmd);
 	exit(0);
 }

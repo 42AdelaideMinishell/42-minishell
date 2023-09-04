@@ -28,7 +28,7 @@ void	wait_child(int status)
 	}
 }
 
-void	handle_process(char *rl, char **envp)
+void	handle_process(char *rl, t_cmd *cmd_args)
 {
 	pid_t	pid;
 	pid_t	terminated_pid;
@@ -37,7 +37,7 @@ void	handle_process(char *rl, char **envp)
 	pid = fork();
 	fork_error(pid);
 	if (pid == 0)
-		execute(rl, envp);
+		execute(rl, cmd_args);
 	else if (pid > 0)
 	{
 		signal_ignore();
