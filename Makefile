@@ -7,7 +7,7 @@ ROOT_DIR = ${shell pwd}
 LIBFT_DIR = ${ROOT_DIR}/libft
 RL_DIR = /usr/local/opt/readline/lib
 
-SRCS = ./src/*.c
+SRCS = ./src/*.c ./src/*/*.c
 INCS = ./inc
 RL_INCS = /usr/local/opt/readline/include/
 
