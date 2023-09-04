@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/04 15:08:15 by jaeshin           #+#    #+#             */
+/*   Updated: 2023/09/04 15:08:16 by jaeshin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 // free the temporary containers after usages
@@ -77,7 +89,7 @@ void	execute(char *cmd, char **envp)
 	char	*path;
 	int		result;
 
-	split_cmd = ft_split(cmd, ' ');
+	split_cmd = minishell_split(cmd, ' ');
 	path = get_path(split_cmd[0], envp);
 	result = execve(path, split_cmd, envp);
 	if (result == -1)
