@@ -3,6 +3,7 @@
 
 # include "../libft/libft.h"
 # include <dirent.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <signal.h>
 # include <sys/stat.h>
@@ -23,6 +24,24 @@ typedef struct s_cmd {
 # define GET 1
 # define SET 2
 
+// Path
+char	*find_path(char *name, char **envp);
+char	*get_path(char *cmd, char **envp);
+void	execute(char *cmd, t_cmd *cmd_args);
+
+// Process
+void	handle_process(char *rl, t_cmd *cmd_args);
+
+// Handle builtins
+int	handle_cd(char **split_cmd, t_cmd *cmd_args);
+int	handle_else(char **split_cmd, t_cmd *cmd_args);
+
+// Execute
+void	execute(char *cmd, t_cmd *cmd_args);
+
+// Initial command
+t_cmd	*initial_cmd(char **envp);
+
 // Memory
 void	free_container(char **temp);
 
@@ -30,11 +49,6 @@ void	free_container(char **temp);
 void	argc_error(int argc);
 void	fork_error(pid_t pid);
 void	result_error(int result, char **split_cmd);
-
-// Path
-char	*find_path(char *name, char **envp);
-char	*get_path(char *cmd, char **envp);
-void	execute(char *cmd, t_cmd *cmd_args);
 
 // Terminal input output setting
 void	new_term(void);
@@ -45,17 +59,7 @@ void	signal_handler(int signum);
 void	init_signal(void);
 void	signal_ignore(void);
 
-// Process
-void	handle_process(char *rl, t_cmd *cmd_args);
-
-// Handle builtins
-int	handle_cd(char **split_cmd, t_cmd *cmd_args);
-int	handle_else(char **split_cmd, t_cmd *cmd_args);
-
-// Initial command
-t_cmd	*initial_cmd(char **envp);
-
 // Utiles
-char	**minishell_split(char const *s, char c);
+char	**space_quotes_split(char const *s);
 
 #endif
