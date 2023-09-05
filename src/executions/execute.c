@@ -1,12 +1,12 @@
 #include "../../inc/minishell.h"
 
 // tries to run the command, if it doesn't work, returns the error message.
-void	execute(char *cmd, t_cmd *cmd_args)
+void	execute(char *rl, t_cmd *cmd_args)
 {
 	char	**split_cmd;
 	int		result;
 
-	split_cmd = space_quotes_split(cmd);
+	split_cmd = space_quotes_split(rl);
 	result = 0;
 	if (ft_strncmp(split_cmd[0], "cd", sizeof(split_cmd[0])) == 0)
 		result = handle_cd(split_cmd, cmd_args);
@@ -19,8 +19,8 @@ void	execute(char *cmd, t_cmd *cmd_args)
 	else
 	{
 		//printf("%s\n", cmd_args->envp[0]);
-		result = handle_else(split_cmd, cmd_args);
+		result = handle_else(cmd_args);
 	}
 	result_error(result, split_cmd);
-	exit(0);
+	// exit(0);
 }

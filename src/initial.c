@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initial.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:20:54 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/04 15:17:22 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/05 16:07:25 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,20 @@ static char	*ini_pwd(void)
 	return (absolute_path);
 }
 
+int	count_pipe(char *rl)
+{
+	int	i;
+
+	i = 0;
+	while (*rl)
+	{
+		if (*rl == '|')
+			i++;
+		rl++;
+	}
+	return (i);
+}
+
 t_cmd	*initial_cmd(char **envp)
 {
 	t_cmd	*cmd_args;
@@ -37,6 +51,10 @@ t_cmd	*initial_cmd(char **envp)
 	cmd_args->abs_path = ini_pwd();
 	cmd_args->home_path = getenv("HOME");
 	cmd_args->envp = envp;
+	cmd_args->pipe_c = 0;
+	cmd_args->cmd_one = NULL;
+	cmd_args->cmd_two = NULL;
+	cmd_args->cmd_three = NULL;
 	if (cmd_args->abs_path == NULL
 		|| cmd_args->home_path == NULL)
 	{

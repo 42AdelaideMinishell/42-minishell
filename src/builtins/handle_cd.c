@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:06:09 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/04 17:33:51 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/05 19:25:05 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	handle_cd(char **split_cmd, t_cmd *cmd_args)
 		cmd_args->abs_path = ft_strjoin(cmd_args->home_path, "");
 		return (0);
 	}
-	result = handle_else(split_cmd, cmd_args);
+	result = handle_else(cmd_args);
 	if (result == -1)
 		return (result);
 	else if (ft_strncmp(split_cmd[1], "..", sizeof(split_cmd[1])) == 0
