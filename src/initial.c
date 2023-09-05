@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:20:54 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/04 15:17:22 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/05 14:51:53 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_cmd	*initial_cmd(char **envp)
 	if (cmd_args == NULL)
 		return (NULL);
 	cmd_args->abs_path = ini_pwd();
+	cmd_args->pre_path = ini_pwd();
 	cmd_args->home_path = getenv("HOME");
 	cmd_args->envp = envp;
 	if (cmd_args->abs_path == NULL

@@ -17,6 +17,7 @@
 typedef struct s_cmd {
 	char	*home_path;
 	char	*abs_path;
+	char	*pre_path;
 	char	**envp;
 }	t_cmd;
 
@@ -27,7 +28,7 @@ typedef struct s_cmd {
 // Path
 char	*find_path(char *name, char **envp);
 char	*get_path(char *cmd, char **envp);
-void	execute(char *cmd, t_cmd *cmd_args);
+// void	execute(char *cmd, t_cmd *cmd_args, int *fd);
 
 // Process
 void	handle_process(char *rl, t_cmd *cmd_args);
@@ -37,7 +38,7 @@ int	handle_cd(char **split_cmd, t_cmd *cmd_args);
 int	handle_else(char **split_cmd, t_cmd *cmd_args);
 
 // Execute
-void	execute(char *cmd, t_cmd *cmd_args);
+void	execute(char *cmd, t_cmd *cmd_args, int *fd);
 
 // Initial command
 t_cmd	*initial_cmd(char **envp);
