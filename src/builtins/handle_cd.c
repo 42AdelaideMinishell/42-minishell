@@ -3,144 +3,135 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:06:09 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/05 19:25:05 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/06 11:17:09 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	get_dot_num(char **array)
+static void	update_cdm_args_back_util(t_cmd *cmd_args, int num)
 {
-	int size;
-
-	size = 0;
-	while (array[size] != NULL)
-	{
-		if (array[size][0] == '\0')
-		{
-			size--;
-			break ;
-		}
-		size++;
-	}
-	return (size);
-}
-
-char	*join_dirs(char *s1, char *s2)
-{
-	char	*res;
 	int		i;
-	int		k;
-
-	i = ft_strlen(s1) + ft_strlen(s2);
-	res = malloc((i + 1) * sizeof(char));
-	if (res != NULL)
-	{
-		res[i] = '\0';
-		k = 0;
-		while (*s1)
-		{
-			res[k] = *s1;
-			s1++;
-			k++;
-		}
-		while (*s2)
-		{
-			res[k] = *s2;
-			s2++;
-			k++;
-		}
-		free(s1);
-	}
-	return (res);
-}
-
-static char	*update_cdm_args_back_util(char **dirs, int num)
-{
-	char	*bslash;
+	int		j;
 	char	*res;
-	char	*tem;
-	int		i;
 
-	bslash = malloc(2 * sizeof(char));
-	bslash[0] = '/';
-	bslash[1] = '\0';
-	if (num == 0)
-		return (bslash);
-	else
+	i = -1;
+	j = 0;
+	while ((cmd_args->abs_path)[j])
 	{
-		res = join_dirs(bslash, dirs[0]);
-		i = 1;
-		while (i < num)
-		{
-			tem = join_dirs(bslash, dirs[i]);
-			res = join_dirs(res, tem);
-			free(tem);
+		if ((cmd_args->abs_path)[j] == '/')
 			i++;
-		}
-		return (res);
+		if (i == num)
+			break ;
+		j++;
 	}
+	res = malloc((j + 1) * sizeof(char));
+	ft_memcpy(res, cmd_args->abs_path, j);
+	res[j] = '\0';
+	free(cmd_args->abs_path);
+	cmd_args->abs_path = ft_strjoin(res, "");
 }
 
-static void	update_cdm_args_back(char **split_cmd, t_cmd *cmd_args)
+static void	update_cdm_args_back(char *cmd, t_cmd *cmd_args)
 {
 	int		size_back;
 	int		size_total;
-	char	**dot;
-	char	**dirs;
+	char	*dirs;
 
-	dot = ft_split(split_cmd[1], '/');
-	size_back = get_dot_num(dot);
-	dirs = ft_split(++(cmd_args->abs_path), '/');
-	size_total = get_dot_num(dirs);
-	free(cmd_args->abs_path);
+	size_back = 0;
+	while (*cmd)
+	{
+		if (*cmd == '.' && *(cmd + 1) == '.')
+			size_back++;
+		cmd++;
+	}
+	size_total = 0;
+	dirs = cmd_args->abs_path;
+	while (*dirs)
+	{
+		if (*dirs == '/')
+			size_total++;
+		dirs++;
+	}
 	if (size_total <= size_back)
-		cmd_args->abs_path = update_cdm_args_back_util(dirs, 0);
+		(cmd_args->abs_path)[1] = '\0';
 	else
-		cmd_args->abs_path = update_cdm_args_back_util(dirs, size_total - size_back);
-	free_container(dot);
-	free_container(dirs);
+		update_cdm_args_back_util(cmd_args, size_total - size_back);
 }
 
-static void	update_cdm_args_for(char *cmd, t_cmd *cmd_args)
+static void	update_cdm_args_to_child(char *cmd, t_cmd *cmd_args)
 {
-	char	*tem;
+	char	*path;
+	char	*cmd_path;
+	int		i;
 
-	if (cmd[0] == '/')
+	cmd_path = ft_strjoin("/", cmd);
+	path = ft_strjoin(cmd_args->abs_path, cmd_path);
+	i = ft_strlen(path);
+	if (path[i - 1] == '/')
+		path[i - 1] = '\0';
+	if (access(path, F_OK | X_OK) == 0)
 	{
 		free(cmd_args->abs_path);
-		cmd_args->abs_path = ft_strjoin("", cmd);
+		cmd_args->abs_path = ft_strjoin(path, "");
 	}
 	else
-	{
-		tem = ft_strjoin("/", cmd);
-		cmd_args->abs_path = join_dirs(cmd_args->abs_path, tem);
-		free(tem);
-	}
+		printf("cd: %s: No such file or directory\n", cmd);
+	free(cmd_path);
+	free(path);
 }
-// TODO
+
+int	handle_cd_utils(char **split_cmd, t_cmd *cmd_args)
+{
+	if (ft_strncmp(split_cmd[1], "-", sizeof(split_cmd[1])) == 0)
+		return (2);
+	if (ft_strncmp(split_cmd[1], ".", sizeof(split_cmd[1])) == 0)
+		return (3);
+	if (split_cmd[1][0] == '.' && split_cmd[1][1] == '.')
+		update_cdm_args_back(split_cmd[1], cmd_args);
+	else if (split_cmd[1][0] == '/')
+	{
+		if (access(split_cmd[1], F_OK | X_OK) == 0)
+		{
+			free(cmd_args->abs_path);
+			cmd_args->abs_path = ft_strjoin(split_cmd[1], "");
+		}
+		else
+			printf("cd: %s: No such file or directory\n", split_cmd[1]);
+	}
+	else
+		update_cdm_args_to_child(split_cmd[1], cmd_args);
+	return (0);
+}
+
 int	handle_cd(char **split_cmd, t_cmd *cmd_args)
 {
-	int		result;
+	int	size;
 
-	if (ft_strncmp(split_cmd[1], "~", sizeof(split_cmd[1])) == 0)
+	size = -1;
+	while (split_cmd[++size] != NULL)
+	{
+		if (split_cmd[size][0] == '\0')
+			break ;
+	}
+	if (size >= 3)
+	{
+		if (size == 3)
+			printf("cd: string not in pwd: %s\n", split_cmd[1]);
+		else
+			printf("cd: too many arguments\n");
+		return (1);
+	}
+	if (!split_cmd[1]
+		|| ft_strncmp(split_cmd[1], "~", sizeof(split_cmd[1])) == 0)
 	{
 		free(cmd_args->abs_path);
 		cmd_args->abs_path = NULL;
 		cmd_args->abs_path = ft_strjoin(cmd_args->home_path, "");
 		return (0);
 	}
-	result = handle_else(cmd_args);
-	if (result == -1)
-		return (result);
-	else if (ft_strncmp(split_cmd[1], "..", sizeof(split_cmd[1])) == 0
-		|| ft_strncmp(split_cmd[1], "../", sizeof(split_cmd[1])) == 0)
-		update_cdm_args_back(split_cmd, cmd_args);
-	else if (ft_strncmp(split_cmd[1], ".", sizeof(split_cmd[1])) == 0);
-	else
-		update_cdm_args_for(split_cmd[1], cmd_args);
-	return (result);
+	return (handle_cd_utils(split_cmd, cmd_args));
 }
