@@ -7,7 +7,7 @@ void	execute(char *cmd, t_cmd *cmd_args, int *fd)
 	int		result;
 	char	*tem;
 
-	split_cmd = space_quotes_split(cmd);
+	split_cmd = space_quotes_split(rl);
 	result = 0;
 	if (ft_strncmp(split_cmd[0], "cd", sizeof(split_cmd[0])) == 0)
 	{
@@ -29,12 +29,17 @@ void	execute(char *cmd, t_cmd *cmd_args, int *fd)
 	if (ft_strncmp(split_cmd[0], "unset", sizeof(split_cmd[0])) == 0
 		&& ft_strncmp(split_cmd[1], "PATH", sizeof(split_cmd[0])) == 0)
 	{
+//<<<<<<< jlyu
 		tem = ft_strjoin("envp", "");
 		close(fd[0]);
 		write(fd[1], tem, ft_strlen(tem));
 		close(fd[1]);
 		free(tem);
 		exit(0);
+//=======
+		//printf("%s\n", cmd_args->envp[0]);
+//		result = handle_else(cmd_args);
+//>>>>>>> main
 	}
 	close(fd[0]);
 	write(fd[1], "null", 4);
@@ -44,5 +49,5 @@ void	execute(char *cmd, t_cmd *cmd_args, int *fd)
 	else
 		result = handle_else(split_cmd, cmd_args);
 	result_error(result, split_cmd);
-	exit(0);
+	// exit(0);
 }

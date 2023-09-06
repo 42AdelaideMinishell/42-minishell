@@ -21,12 +21,13 @@ int main(int argc, char **argv, char **envp)
 	}
 	while (1)
 	{
-		rl = readline("🟢 4️⃣ 2️⃣ minishell % ");
+		rl = readline("🟢  4️⃣ 2️⃣ minishell % ");
 		if (!rl)
 			break ;
 		if (rl[0] == '\0')
 			continue ;
 		add_history(rl);
+		pipe_handle(rl, cmd_args);
 		// creates child pid to run the command and exits after wait
 		handle_process(rl, cmd_args);
 	}

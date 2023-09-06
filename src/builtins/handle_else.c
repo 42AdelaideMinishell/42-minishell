@@ -3,23 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   handle_else.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:05:32 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/05 11:32:22 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/05 19:42:52 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	handle_else(char **split_cmd, t_cmd *cmd_args)
+// void	get_each_path(t_cmd *cmd_args, char *cmd, char **envp)
+// {
+// 	int	count;
+
+// 	count = cmd_args->pipe_c;
+// 	while (count >= 0)
+// 	{
+		
+// 	}
+// }
+
+int	handle_else(t_cmd *cmd_args)
 {
 	char	*path;
 	int		result;
 
-	if (cmd_args->envp == NULL)
-		result_error(-1, split_cmd);
-	path = get_path(split_cmd[0], cmd_args->envp);
-	result = execve(path, split_cmd, cmd_args->envp);
+//<<<<<<< jlyu
+//	if (cmd_args->envp == NULL)
+//		result_error(-1, split_cmd);
+//	path = get_path(split_cmd[0], cmd_args->envp);
+//	result = execve(path, split_cmd, cmd_args->envp);
+//=======
+	path = get_path(cmd_args->cmd_one[0], cmd_args->envp);
+	// not handling options;;
+	result = execve(path, cmd_args->cmd_one, cmd_args->envp);
+//>>>>>>> main
 	return (result);
 }
