@@ -48,7 +48,7 @@ int		handle_cd(char **split_cmd, t_cmd *cmd_args);
 int		handle_else(t_cmd *cmd_args);
 
 // Execute
-void	execute(char *cmd, t_cmd *cmd_args, int *fd);
+void	execute(char *rl, t_cmd *cmd_args, int *fd);
 
 // Initial command
 t_cmd	*initial_cmd(char **envp);
