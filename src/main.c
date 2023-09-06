@@ -27,7 +27,6 @@ int main(int argc, char **argv, char **envp)
 		if (rl[0] == '\0')
 			continue ;
 		add_history(rl);
-		pipe_handle(rl, cmd_args);
 		// creates child pid to run the command and exits after wait
 		handle_process(rl, cmd_args);
 	}

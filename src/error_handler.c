@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:20 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/06 10:05:45 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/06 12:01:40 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	fork_error(pid_t pid)
 		perror("fork error\n");
 }
 
-void	result_error(int result, char **split_cmd)
+void	result_error(int result, t_cmd *cmd_args)
 {
 	if (result == -1)
 	{
 		ft_putstr_fd("🔴  4️⃣ 2️⃣ minishell: command not found: ", 2);
-		ft_putendl_fd(split_cmd[0], 2);
-		free_container(split_cmd);
+		ft_putendl_fd(cmd_args->cmd_one[0], 2);
+		// free_container(cmd_args->cmd_one);
 		exit(1);
 	}
 }

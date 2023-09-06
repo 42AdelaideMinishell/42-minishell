@@ -20,6 +20,7 @@ typedef struct s_cmd {
 	char	*pre_path;
 	char	**envp;
 	int		pipe_c;
+	int		which_cmd;
 	char	**cmd_one;
 	char	**cmd_two;
 	char	**cmd_three;
@@ -28,6 +29,11 @@ typedef struct s_cmd {
 // Terminal control attributes
 # define GET 1
 # define SET 2
+
+// Commands by pipes
+# define FIRST 1
+# define SECOND 2
+# define THIRD 3
 
 // Path
 char	*find_path(char *name, char **envp);
@@ -41,14 +47,14 @@ void	handle_process(char *rl, t_cmd *cmd_args);
 // Pipe
 int		count_pipe(char *rl);
 int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int order);
-void	pipe_handle(char *rl, t_cmd *cmd_args);
+void	cmd_by_pipe(char *rl, t_cmd *cmd_args);
 
 // Handle builtins
 int		handle_cd(char **split_cmd, t_cmd *cmd_args);
-int		handle_else(t_cmd *cmd_args);
+int		handle_else(char **cmd, t_cmd *cmd_args);
 
 // Execute
-void	execute(char *rl, t_cmd *cmd_args, int *fd);
+void	execute(t_cmd *cmd_args, int *fd);
 
 // Initial command
 t_cmd	*initial_cmd(char **envp);
@@ -59,7 +65,7 @@ void	free_container(char **temp);
 // Error
 void	argc_error(int argc);
 void	fork_error(pid_t pid);
-void	result_error(int result, char **split_cmd);
+void	result_error(int result, t_cmd *cmd_args);
 
 // Terminal input output setting
 void	new_term(void);
