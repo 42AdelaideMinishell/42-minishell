@@ -3,31 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_cd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:06:09 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/05 19:25:05 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/06 11:17:09 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-static int	get_dot_num(char **array)
-{
-	int size;
-
-	size = 0;
-	while (array[size] != NULL)
-	{
-		if (array[size][0] == '\0')
-		{
-			size--;
-			break ;
-		}
-		size++;
-	}
-	return (size);
-}
 
 static void	update_cdm_args_back_util(t_cmd *cmd_args, int num)
 {
@@ -79,17 +62,6 @@ static void	update_cdm_args_back(char *cmd, t_cmd *cmd_args)
 		update_cdm_args_back_util(cmd_args, size_total - size_back);
 }
 
-static void	update_cdm_args_for(char *cmd, t_cmd *cmd_args)
-{
-	if (access(cmd, F_OK | X_OK) == 0)
-	{
-		free(cmd_args->abs_path);
-		cmd_args->abs_path = ft_strjoin(cmd, "");
-	}
-	else
-		printf("cd: %s: No such file or directory\n", cmd);
-}
-
 static void	update_cdm_args_to_child(char *cmd, t_cmd *cmd_args)
 {
 	char	*path;
@@ -112,19 +84,45 @@ static void	update_cdm_args_to_child(char *cmd, t_cmd *cmd_args)
 	free(path);
 }
 
+int	handle_cd_utils(char **split_cmd, t_cmd *cmd_args)
+{
+	if (ft_strncmp(split_cmd[1], "-", sizeof(split_cmd[1])) == 0)
+		return (2);
+	if (ft_strncmp(split_cmd[1], ".", sizeof(split_cmd[1])) == 0)
+		return (3);
+	if (split_cmd[1][0] == '.' && split_cmd[1][1] == '.')
+		update_cdm_args_back(split_cmd[1], cmd_args);
+	else if (split_cmd[1][0] == '/')
+	{
+		if (access(split_cmd[1], F_OK | X_OK) == 0)
+		{
+			free(cmd_args->abs_path);
+			cmd_args->abs_path = ft_strjoin(split_cmd[1], "");
+		}
+		else
+			printf("cd: %s: No such file or directory\n", split_cmd[1]);
+	}
+	else
+		update_cdm_args_to_child(split_cmd[1], cmd_args);
+	return (0);
+}
+
 int	handle_cd(char **split_cmd, t_cmd *cmd_args)
 {
 	int	size;
 
-	size = get_dot_num(split_cmd);
-	if (size == 3)
+	size = -1;
+	while (split_cmd[++size] != NULL)
 	{
-		printf("cd: string not in pwd: %s\n", split_cmd[1]);
-		return (1);
+		if (split_cmd[size][0] == '\0')
+			break ;
 	}
-	if (size > 3)
+	if (size >= 3)
 	{
-		printf("cd: too many arguments\n");
+		if (size == 3)
+			printf("cd: string not in pwd: %s\n", split_cmd[1]);
+		else
+			printf("cd: too many arguments\n");
 		return (1);
 	}
 	if (!split_cmd[1]
@@ -135,15 +133,5 @@ int	handle_cd(char **split_cmd, t_cmd *cmd_args)
 		cmd_args->abs_path = ft_strjoin(cmd_args->home_path, "");
 		return (0);
 	}
-	if (ft_strncmp(split_cmd[1], "-", sizeof(split_cmd[1])) == 0)
-		return (2);
-	if (ft_strncmp(split_cmd[1], ".", sizeof(split_cmd[1])) == 0)
-		return (3);
-	if (split_cmd[1][0] == '.' && split_cmd[1][1] == '.')
-		update_cdm_args_back(split_cmd[1], cmd_args);
-	else if (split_cmd[1][0] == '/')
-		update_cdm_args_for(split_cmd[1], cmd_args);
-	else
-		update_cdm_args_to_child(split_cmd[1], cmd_args);
-	return (0);
+	return (handle_cd_utils(split_cmd, cmd_args));
 }
