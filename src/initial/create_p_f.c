@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handler.c                                    :+:      :+:    :+:   */
+/*   create_p_f.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/04 15:08:20 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/06 15:56:06 by jlyu             ###   ########.fr       */
+/*   Created: 2023/09/06 16:00:10 by jlyu              #+#    #+#             */
+/*   Updated: 2023/09/06 16:03:54 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	argc_error(int argc)
+void	create_pipe(int *fd)
 {
-	if (argc != 1)
-		exit(1);
+	if (pipe(fd) == -1)
+		perror("pipe");
 }
 
-void	fork_error(pid_t pid)
+void	create_fork(pid_t *pid)
 {
-	if (pid == -1)
-		perror("fork error\n");
-}
-
-void	result_error(int result, char **split_cmd)
-{
-	if (result == -1)
-	{
-		ft_putstr_fd("🔴  4️⃣ 2️⃣ minishell: command not found: ", 2);
-		ft_putendl_fd(split_cmd[0], 2);
-		free_container(split_cmd);
-		exit(1);
-	}
+	*pid = fork();
+	fork_error(*pid);
 }

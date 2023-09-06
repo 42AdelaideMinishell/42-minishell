@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
+/*   Updated: 2023/09/06 16:12:30 by jlyu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -34,14 +46,18 @@ char	*find_path(char *name, char **envp);
 char	*get_path(char *cmd, char **envp);
 // void	execute(char *cmd, t_cmd *cmd_args, int *fd);
 
-
 // Process
 void	handle_process(char *rl, t_cmd *cmd_args);
+void	process_parent(t_cmd *cmd_args, int *fd);
 
 // Pipe
+void	create_pipe(int *fd);
 int		count_pipe(char *rl);
 int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int order);
 void	pipe_handle(char *rl, t_cmd *cmd_args);
+
+// Fork
+void	create_fork(pid_t *pid);
 
 // Handle builtins
 int		handle_cd(char **split_cmd, t_cmd *cmd_args);

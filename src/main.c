@@ -1,8 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
+/*   Updated: 2023/09/06 15:32:37 by jlyu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-int main(int argc, char **argv, char **envp)
+static void	run_shell(t_cmd *cmd_args)
 {
-	char			*rl;
+	char	*rl;
+
+	while (1)
+	{
+		rl = readline("🟢  4️⃣ 2️⃣ minishell % ");
+		if (!rl)
+			break ;
+		if (rl[0] == '\0')
+			continue ;
+		add_history(rl);
+		pipe_handle(rl, cmd_args);
+		// creates child pid to run the command and exits after wait
+		handle_process(rl, cmd_args);
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
 	struct termios	o_term;
 	t_cmd			*cmd_args;
 
@@ -19,18 +48,7 @@ int main(int argc, char **argv, char **envp)
 		perror("malloc");
 		exit(1);
 	}
-	while (1)
-	{
-		rl = readline("🟢  4️⃣ 2️⃣ minishell % ");
-		if (!rl)
-			break ;
-		if (rl[0] == '\0')
-			continue ;
-		add_history(rl);
-		pipe_handle(rl, cmd_args);
-		// creates child pid to run the command and exits after wait
-		handle_process(rl, cmd_args);
-	}
+	run_shell(cmd_args);
 	// Gets back to original terminal setting
 	old_term(SET, &o_term);
 	free(cmd_args);
