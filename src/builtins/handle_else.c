@@ -28,8 +28,15 @@ int	handle_else(t_cmd *cmd_args)
 	char	*path;
 	int		result;
 
+//<<<<<<< jlyu
+//	if (cmd_args->envp == NULL)
+//		result_error(-1, split_cmd);
+//	path = get_path(split_cmd[0], cmd_args->envp);
+//	result = execve(path, split_cmd, cmd_args->envp);
+//=======
 	path = get_path(cmd_args->cmd_one[0], cmd_args->envp);
 	// not handling options;;
 	result = execve(path, cmd_args->cmd_one, cmd_args->envp);
+//>>>>>>> main
 	return (result);
 }

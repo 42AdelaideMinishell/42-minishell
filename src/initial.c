@@ -49,6 +49,7 @@ t_cmd	*initial_cmd(char **envp)
 	if (cmd_args == NULL)
 		return (NULL);
 	cmd_args->abs_path = ini_pwd();
+	cmd_args->pre_path = ini_pwd();
 	cmd_args->home_path = getenv("HOME");
 	cmd_args->envp = envp;
 	cmd_args->pipe_c = 0;
