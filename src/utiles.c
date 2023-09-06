@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:23:29 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 20:28:52 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/05 15:53:34 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,25 @@ static void	copy(char const *s, char **res)
 	}
 }
 
-char	**space_quotes_split(char const *s)
+char	**space_quotes_split(char const *rl)
 {
 	char	**res;
 	int		size;
 
-	if (!*s)
+	if (!*rl)
 	{
 		res = malloc((1) * sizeof(char *));
 		res[0] = NULL;
 		return (res);
 	}
-	while (*s == ' ' || *s == '\'' || *s == '\"')
-		s++;
-	size = get_size(s);
+	while (*rl == ' ' || *rl == '\'' || *rl == '\"')
+		rl++;
+	size = get_size(rl);
 	res = malloc((size + 1) * sizeof(char *));
 	if (res != NULL)
 	{
 		res[size] = NULL;
-		copy(s, res);
+		copy(rl, res);
 	}
 	return (res);
 }

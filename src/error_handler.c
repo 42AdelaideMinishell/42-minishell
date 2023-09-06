@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:20 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 20:42:12 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/05 13:10:12 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	result_error(int result, char **split_cmd)
 {
 	if (result == -1)
 	{
-		ft_putstr_fd("🔴 4️⃣ 2️⃣ minishell: command not found: ", 2);
+		ft_putstr_fd("🔴  4️⃣ 2️⃣ minishell: command not found: ", 2);
 		ft_putendl_fd(split_cmd[0], 2);
 		free_container(split_cmd);
 		exit(1);
