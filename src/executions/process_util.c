@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_parent.c                                   :+:      :+:    :+:   */
+/*   process_util.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:14:24 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/07 13:42:31 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/07 14:11:23 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	process_parent(char *rl, t_cmd *cmd_args, int status)
 {
 	char	**split_cmd;
 
-	printf("%d\n", status);
 	if (status != 0)
 		return ;
 	split_cmd = space_quotes_split(rl);
