@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:23:29 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/05 15:53:34 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/07 10:15:46 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	copy(char const *s, char **res)
 	}
 }
 
+// Splite cmds on spaces and quotes
 char	**space_quotes_split(char const *rl)
 {
 	char	**res;

@@ -27,7 +27,6 @@ int main(int argc, char **argv, char **envp)
 		if (rl[0] == '\0')
 			continue ;
 		add_history(rl);
-		// creates child pid to run the command and exits after wait
 		handle_process(rl, cmd_args);
 	}
 	// Gets back to original terminal setting
