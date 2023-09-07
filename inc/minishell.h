@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
+/*   Updated: 2023/09/07 13:45:15 by jaeshin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -46,6 +58,8 @@ char	*get_path(char *cmd, char **envp);
 
 // Process
 void	handle_process(char *rl, t_cmd *cmd_args);
+void	process_parent(char *rl, t_cmd *cmd_args, int status);
+void	process_child(t_cmd *cmd_args);
 
 // Handle builtins
 int		handle_cd(char **split_cmd, t_cmd *cmd_args);
@@ -53,6 +67,24 @@ int		handle_else(char **cmd, t_cmd *cmd_args);
 
 // Execute
 void	execute(t_cmd *cmd_args, int *fd);
+
+// Pipe
+void	create_pipe(int *fd);
+int		count_pipe(char *rl);
+int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int order);
+void	cmd_by_pipe(char *rl, t_cmd *cmd_args);
+
+// Fork
+void	create_fork(pid_t *pid);
+
+// Handle builtins
+void	process_cd(char **split_cmd, t_cmd *cmd_args);
+
+// Initial command
+t_cmd	*initial_cmd(char **envp);
+
+// Memory
+void	free_container(char **temp);
 
 /* ------------------------------------------------------------ */
 

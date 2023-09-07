@@ -1,13 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   create_p_f.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/06 15:22:29 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 13:30:17 by jaeshin          ###   ########.fr       */
+/*   Created: 2023/09/06 16:00:10 by jlyu              #+#    #+#             */
+/*   Updated: 2023/09/06 16:03:54 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/minishell.h"
+
+void	create_pipe(int *fd)
+{
+	if (pipe(fd) == -1)
+		perror("pipe");
+}
+
+void	create_fork(pid_t *pid)
+{
+	*pid = fork();
+	fork_error(*pid);
+}
