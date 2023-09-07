@@ -6,25 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:15 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 21:10:08 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/07 10:10:42 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-// free the temporary containers after usages
-void	free_container(char **temp)
-{
-	int	i;
-
-	i = 0;
-	while (temp[i])
-	{
-		free(temp[i]);
-		i++;
-	}
-	free(temp);
-}
 
 // takes the env pointer and search for the path where commands are stored
 char	*find_path(char *name, char **envp)

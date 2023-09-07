@@ -3,108 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 12:20:10 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/07 13:45:25 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// handles ctrl+c during operations
-void	wait_child(int status)
+void	child(t_cmd *cmd_args, int *p_fd)
 {
-	int	signal;
+	// int	fd;
 
-	if (WIFSIGNALED(status))
+	// fd = open_file("infile", 0);
+	// printf("child %d\n", fd);
+	printf("hello from second child\n");
+	// dup2(fd, 0);
+	if (cmd_args->pipe_c > 0)
 	{
-		signal = WTERMSIG(status);
-		if (signal == SIGINT)
-			ft_putendl_fd("^C", 2);
-		else if (signal == SIGQUIT)
-			ft_putendl_fd("^\\minishell: quit ", 2);
+		dup2(p_fd[1], 1);
+		close(p_fd[0]);
 	}
+	printf("child cmd %d\n", cmd_args->which_cmd);
+	process_child(cmd_args);
 }
 
-// void	child(char **argv, int *p_fd, char **envp)
-// {
-// 	dup2(p_fd[1], 1);
-// 	close(p_fd[0]);
-// 	execute(argv[2], envp);
-// }
-
-// void	parent(char **argv, int *p_fd, char **envp)
-// {
-// 	dup2(p_fd[0], 0);
-// 	close(p_fd[1]);
-// 	execute(argv[3], envp);
-// }
-
-int	count_cmd(char **split_cmd)
+void	parent(t_cmd *cmd_args, int *p_fd)
 {
-	int	i;
+	// int	fd;
 
-	i = 0;
-	while (split_cmd[i] && ft_strncmp(split_cmd[i], "|", 2) != 0)
-		i++;
-	return (i);
+	// fd = open_file("outfile", 1);
+	// printf("parent %d\n", fd);
+	printf("hello from second parent\n");
+	// dup2(fd, 1);
+	dup2(p_fd[0], 0);
+	close(p_fd[1]);
+	cmd_args->which_cmd++;
+	printf("parent cmd %d\n", cmd_args->which_cmd);
+	process_child(cmd_args);
 }
 
-int	separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int order)
+void	another_child(t_cmd *cmd_args)
 {
-	int	j;
+	int		p_fd[2];
+	pid_t	pid;
+	int		status;
+	pid_t	terminated_pid;
 
-	j = 0;
-	if (order == 1)
+	if (pipe(p_fd) == -1)
+		exit(1);
+	pid = fork();
+	fork_error(pid);
+	if (pid == 0)
 	{
-		cmd_args->cmd_one = malloc(sizeof(char *) * count_cmd(split_cmd));
-		while (split_cmd[i] && ft_strncmp(split_cmd[i], "|", 2) != 0)
+		printf("hello from first child\n");
+		child(cmd_args, p_fd);
+	}
+	else if (pid > 0)
+	{
+		signal_ignore();
+		terminated_pid = wait(&status);
+		signal_interruped(status);
+		if (terminated_pid == pid)
 		{
-			cmd_args->cmd_one[j] = ft_strdup(split_cmd[i]);
-			i++;
-			j++;
+			printf("hello from frist parent\n");
+			if (WIFEXITED(status))
+				parent(cmd_args, p_fd);
 		}
+		else
+			perror("pid error\n");
 	}
-	else if (order == 2)
-	{
-		cmd_args->cmd_two = malloc(sizeof(char *) * count_cmd(split_cmd));
-		while (split_cmd[i] && ft_strncmp(split_cmd[i], "|", 2) != 0)
-		{
-			cmd_args->cmd_two[j] = ft_strdup(split_cmd[i]);
-			i++;
-			j++;
-		}
-	}
-	else if (order == 3)
-	{
-		cmd_args->cmd_three = malloc(sizeof(char *) * count_cmd(split_cmd));
-		while (split_cmd[i] && ft_strncmp(split_cmd[i], "|", 2) != 0)
-		{
-			cmd_args->cmd_three[j] = ft_strdup(split_cmd[i]);
-			i++;
-			j++;
-		}
-	}
-	return (i);
-}
-
-void	pipe_handle(char *rl, t_cmd *cmd_args)
-{
-	char	**split_cmd;
-	int		i;
-	int		order;
-
-	i = 0;
-	order = 1;
-	split_cmd = space_quotes_split(rl);
-	cmd_args->pipe_c = count_pipe(rl);
-	while (cmd_args->pipe_c >= 0)
-	{
-		i += separate_pipe_cmd(split_cmd, cmd_args, i, order);
-		order++;
-		cmd_args->pipe_c--;
-	}
+	exit(0);
 }
 
 void	handle_process(char *rl, t_cmd *cmd_args)
@@ -113,15 +83,21 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 	pid_t	terminated_pid;
 	int		status;
 
-	pipe_handle(rl, cmd_args);
+	cmd_by_pipe(rl, cmd_args);
 	create_fork(&pid);
 	if (pid == 0)
-		process_child(rl, cmd_args);
+	{
+		// Create a grandchild
+		if (cmd_args->pipe_c > 0)
+			another_child(cmd_args);
+		else
+			process_child(cmd_args);
+	}
 	else if (pid > 0)
 	{
 		signal_ignore();
 		terminated_pid = wait(&status);
-		wait_child(status);
+		signal_interruped(status);
 		if (terminated_pid == pid)
 		{
 			if (WIFEXITED(status))
@@ -133,5 +109,6 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 		else
 			perror("pid error\n");
 	}
+	free_all_cmd(cmd_args);
 	init_signal();
 }
