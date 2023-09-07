@@ -6,11 +6,26 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:31 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/04 21:10:48 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/07 10:20:38 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+// handles ctrl+c during operations
+void	signal_interruped(int status)
+{
+	int	signal;
+
+	if (WIFSIGNALED(status))
+	{
+		signal = WTERMSIG(status);
+		if (signal == SIGINT)
+			ft_putendl_fd("^C", 2);
+		else if (signal == SIGQUIT)
+			ft_putendl_fd("^\\minishell: quit ", 2);
+	}
+}
 
 void	signal_handler(int signum)
 {

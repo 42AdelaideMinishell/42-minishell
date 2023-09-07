@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/06 15:32:37 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/07 13:44:55 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	run_shell(t_cmd *cmd_args)
 		if (rl[0] == '\0')
 			continue ;
 		add_history(rl);
-		pipe_handle(rl, cmd_args);
+		cmd_by_pipe(rl, cmd_args);
 		// creates child pid to run the command and exits after wait
 		handle_process(rl, cmd_args);
 	}
