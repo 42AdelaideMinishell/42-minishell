@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:05:32 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/06 17:06:24 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/07 12:22:25 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,8 @@
 // 	}
 // }
 
-int	handle_else(t_cmd *cmd_args)
-{
-	char	*path;
-	int		result;
+// int	handle_else(t_cmd *cmd_args)
+// {
 
-	char	*temp[3] = {"ls", "-l", NULL};
-	if (cmd_args->envp == NULL)
-		result_error(-1, &cmd_args->cmd_one[0]);
-	chdir(cmd_args->abs_path);
-	path = get_path(cmd_args->cmd_one[0], cmd_args->envp);
-	result = execve(path, temp, cmd_args->envp);
-	return (result);
-}
+// 	return (result);
+// }

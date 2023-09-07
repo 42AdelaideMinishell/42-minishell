@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/06 16:12:11 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/07 12:20:10 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,13 +112,11 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 	pid_t	pid;
 	pid_t	terminated_pid;
 	int		status;
-	int		fd[2];
 
-	create_pipe(fd);
 	pipe_handle(rl, cmd_args);
 	create_fork(&pid);
 	if (pid == 0)
-		execute(rl, cmd_args, fd);
+		process_child(rl, cmd_args);
 	else if (pid > 0)
 	{
 		signal_ignore();
@@ -127,11 +125,13 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 		if (terminated_pid == pid)
 		{
 			if (WIFEXITED(status))
+			{
+				process_parent(rl, cmd_args, status);
 				free(rl);
+			}
 		}
 		else
 			perror("pid error\n");
-		process_parent(cmd_args, fd);
 	}
 	init_signal();
 }

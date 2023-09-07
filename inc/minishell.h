@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/06 16:12:30 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/07 12:20:45 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ typedef struct s_cmd {
 // Path
 char	*find_path(char *name, char **envp);
 char	*get_path(char *cmd, char **envp);
-// void	execute(char *cmd, t_cmd *cmd_args, int *fd);
 
 // Process
 void	handle_process(char *rl, t_cmd *cmd_args);
-void	process_parent(t_cmd *cmd_args, int *fd);
+void	process_parent(char *rl, t_cmd *cmd_args, int status);
+void	process_child(char *rl, t_cmd *cmd_args);
 
 // Pipe
 void	create_pipe(int *fd);
@@ -60,11 +60,8 @@ void	pipe_handle(char *rl, t_cmd *cmd_args);
 void	create_fork(pid_t *pid);
 
 // Handle builtins
-int		handle_cd(char **split_cmd, t_cmd *cmd_args);
+void	process_cd(char **split_cmd, t_cmd *cmd_args);
 int		handle_else(t_cmd *cmd_args);
-
-// Execute
-void	execute(char *rl, t_cmd *cmd_args, int *fd);
 
 // Initial command
 t_cmd	*initial_cmd(char **envp);
