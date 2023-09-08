@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:20 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 13:15:57 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/07 15:34:03 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@ void	argc_error(int argc)
 {
 	if (argc != 1)
 		exit(1);
+}
+
+void	cmd_init_error(t_cmd *cmd_args)
+{
+	if (cmd_args == NULL)
+	{
+		perror("malloc");
+		exit(1);
+	}
 }
 
 void	fork_error(pid_t pid)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/07 16:37:56 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/08 09:59:52 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,15 @@ int	main(int argc, char **argv, char **envp)
 	struct termios	o_term;
 	t_cmd			*cmd_args;
 
-	argc_error(argc);
 	(void)argv;
+	argc_error(argc);
 	init_signal();
 	// termios
 	old_term(GET, &o_term);
 	new_term();
 	// Initial current working directory
 	cmd_args = initial_cmd(envp);
-	if (cmd_args == NULL)
-	{
-		perror("malloc");
-		exit(1);
-	}
+	cmd_init_error(cmd_args);
 	run_shell(cmd_args);
 	// Gets back to original terminal setting
 	old_term(SET, &o_term);
