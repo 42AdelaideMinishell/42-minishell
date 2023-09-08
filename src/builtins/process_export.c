@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:19:07 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 16:03:50 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/08 16:46:49 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,22 @@ void	process_export(char **split_cmd, t_cmd *cmd_args)
 			break ;
 		i++;
 	}
-	if (i <= size)
+	if (i < size)
+	{
+		free(cmd_args->envp[i]);
 		cmd_args->envp[i] = ft_strjoin(tem, tem_cmd[1]);
+	}
 	else
 	{
 		res = malloc((size + 2) * sizeof(char *));
 		size = -1;
 		while (cmd_args->envp[++size])
+		{
 			res[size] = ft_strjoin(cmd_args->envp[size], "");
+			free(cmd_args->envp[size]);
+		}
 		res[size] = ft_strjoin(tem, tem_cmd[1]);
 		res[size + 1] = NULL;
-		free_container(cmd_args->envp);
 		cmd_args->envp = res;
 	}
 	free(tem);
