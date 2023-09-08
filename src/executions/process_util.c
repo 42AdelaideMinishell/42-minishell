@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:14:24 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 16:02:04 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/08 16:36:14 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	process_parent(t_cmd *cmd_args, int status)
 		process_unset(cmd, cmd_args);
 	if (ft_strncmp(cmd[0], "export", sizeof(cmd[0])) == 0)
 		process_export(++cmd, cmd_args);
-	// int i = -1;
-	// while (cmd_args->envp[++i])
-	// 	printf("%s\n", cmd_args->envp[i]);
+	int i = -1;
+	while (cmd_args->envp[++i])
+		printf("%s\n", cmd_args->envp[i]);
 }

@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:17:30 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 15:17:32 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/08 16:50:38 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	process_unset(char **split_cmd, t_cmd *cmd_args)
 {
 	char	*tem;
 	int		i;
+	int		j;
 	int		size;
 	char	**res;
 
@@ -29,19 +30,24 @@ void	process_unset(char **split_cmd, t_cmd *cmd_args)
 			break ;
 		i++;
 	}
-	if (i <= size)
+	if (i < size)
 	{
 		res = malloc(size * sizeof(char *));
 		size = -1;
-		while (cmd_args->envp[++size])
+		j = 0;
+		while (cmd_args->envp[++size + j])
 		{
 			if ( size == i)
-				res[size] = ft_strjoin(tem, "");
-			else
-				res[size] = ft_strjoin(cmd_args->envp[size], "");
+			{
+				free(cmd_args->envp[size + j]);
+				j = 1;
+				if (!cmd_args->envp[size + j])
+					break ;
+			}
+			res[size] = ft_strjoin(cmd_args->envp[size + j], "");
+			free(cmd_args->envp[size + j]);
 		}
 		res[size] = NULL;
-		free_container(cmd_args->envp);
 		cmd_args->envp = res;
 	}
 	free(tem);
