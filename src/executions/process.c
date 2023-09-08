@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 18:07:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/08 09:18:31 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 void	child(t_cmd *cmd_args, int *p_fd)
 {
-	// int	fd;
-
-	// fd = open_file("infile", 0);
-	// dup2(fd, 0);
 	close(p_fd[0]);
 	dup2(p_fd[1], STDOUT_FILENO);
 	close(p_fd[1]);
@@ -27,10 +23,6 @@ void	child(t_cmd *cmd_args, int *p_fd)
 // Todo
 void	parent(t_cmd *cmd_args, int *p_fd)
 {
-	// int	fd;
-
-	// fd = open_file("outfile", 1);
-	// dup2(fd, 1);
 	if (cmd_args->pipe_c > 1)
 	{
 		close(p_fd[0]);

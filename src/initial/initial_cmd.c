@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initial.c                                          :+:      :+:    :+:   */
+/*   initial_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:20:54 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/06 14:39:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/07 14:10:37 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 // Get initial working directory
 static char	*ini_pwd(void)
