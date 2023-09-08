@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:20:54 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/07 14:10:37 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/08 14:28:36 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,21 @@ int	count_pipe(char *rl)
 	return (i);
 }
 
+char	**ini_envp(char **envp)
+{
+	int		size;
+	char	**res;
+
+	size = -1;
+	while (envp[++size]);
+	res = malloc((size + 1) * sizeof(char *));
+	size = -1;
+	while (envp[++size])
+		res[size] = ft_strjoin(envp[size], "");
+	res[size] = NULL;
+	return (res);
+}
+
 t_cmd	*initial_cmd(char **envp)
 {
 	t_cmd	*cmd_args;
@@ -51,7 +66,7 @@ t_cmd	*initial_cmd(char **envp)
 	cmd_args->abs_path = ini_pwd();
 	cmd_args->pre_path = ini_pwd();
 	cmd_args->home_path = getenv("HOME");
-	cmd_args->envp = envp;
+	cmd_args->envp = ini_envp(envp);
 	cmd_args->pipe_c = 0;
 	cmd_args->which_cmd = 0;
 	cmd_args->cmd_one = NULL;

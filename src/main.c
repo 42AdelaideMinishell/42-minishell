@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 09:59:52 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:44:02 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	run_shell(cmd_args);
 	// Gets back to original terminal setting
 	old_term(SET, &o_term);
+	free_container(cmd_args->envp);
 	free(cmd_args);
 	return (0);
 }
