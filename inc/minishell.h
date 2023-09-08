@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 09:59:25 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/08 15:57:32 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	process_child(t_cmd *cmd_args);
 
 // Handle builtins
 void	process_cd(char **split_cmd, t_cmd *cmd_args);
+void	process_unset(char **split_cmd, t_cmd *cmd_args);
+void	process_export(char **split_cmd, t_cmd *cmd_args);
 
 /* ------------------------------------------------------------ */
 
