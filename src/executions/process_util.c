@@ -6,14 +6,14 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:14:24 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 13:48:25 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/08 23:36:00 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 // tries to run the command, if it doesn't work, returns the error message.
-void	process_child(t_cmd *cmd_args)
+void	one_cmd_process(t_cmd *cmd_args)
 {
 	char	**cmd;
 	int		result;
