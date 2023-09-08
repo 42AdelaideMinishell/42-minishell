@@ -3,19 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   create_p_f.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:00:10 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/06 16:03:54 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/07 16:56:09 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-void	create_pipe(int *fd)
+void	create_pipe(int *p_fd)
 {
-	if (pipe(fd) == -1)
+	if (pipe(p_fd) == -1)
+	{
 		perror("pipe");
+		exit(1);
+	}
 }
 
 void	create_fork(pid_t *pid)

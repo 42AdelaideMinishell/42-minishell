@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 13:45:25 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/08 09:18:31 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,31 @@
 
 void	child(t_cmd *cmd_args, int *p_fd)
 {
-	// int	fd;
-
-	// fd = open_file("infile", 0);
-	// printf("child %d\n", fd);
-	printf("hello from second child\n");
-	// dup2(fd, 0);
-	if (cmd_args->pipe_c > 0)
-	{
-		dup2(p_fd[1], 1);
-		close(p_fd[0]);
-	}
-	printf("child cmd %d\n", cmd_args->which_cmd);
+	close(p_fd[0]);
+	dup2(p_fd[1], STDOUT_FILENO);
+	close(p_fd[1]);
 	process_child(cmd_args);
 }
 
+// Todo
 void	parent(t_cmd *cmd_args, int *p_fd)
 {
-	// int	fd;
-
-	// fd = open_file("outfile", 1);
-	// printf("parent %d\n", fd);
-	printf("hello from second parent\n");
-	// dup2(fd, 1);
-	dup2(p_fd[0], 0);
-	close(p_fd[1]);
-	cmd_args->which_cmd++;
-	printf("parent cmd %d\n", cmd_args->which_cmd);
+	if (cmd_args->pipe_c > 1)
+	{
+		close(p_fd[0]);
+		dup2(p_fd[1], STDOUT_FILENO);
+		close(p_fd[1]);
+	}
+	else
+	{
+		close(p_fd[1]);
+		dup2(p_fd[0], STDIN_FILENO);
+		close(p_fd[0]);
+	}
 	process_child(cmd_args);
 }
 
-void	another_child(t_cmd *cmd_args)
+void	second_child(t_cmd *cmd_args)
 {
 	int		p_fd[2];
 	pid_t	pid;
@@ -57,7 +51,6 @@ void	another_child(t_cmd *cmd_args)
 	fork_error(pid);
 	if (pid == 0)
 	{
-		printf("hello from first child\n");
 		child(cmd_args, p_fd);
 	}
 	else if (pid > 0)
@@ -67,7 +60,38 @@ void	another_child(t_cmd *cmd_args)
 		signal_interruped(status);
 		if (terminated_pid == pid)
 		{
-			printf("hello from frist parent\n");
+			cmd_args->which_cmd = 1;
+			if (WIFEXITED(status))
+				parent(cmd_args, p_fd);
+		}
+		else
+			perror("pid error\n");
+	}
+	exit(0);
+}
+
+void	third_child(t_cmd *cmd_args)
+{
+	int		p_fd[2];
+	pid_t	pid;
+	int		status;
+	pid_t	terminated_pid;
+
+	create_pipe(p_fd);
+	pid = fork();
+	fork_error(pid);
+	if (pid == 0)
+	{
+		second_child(cmd_args);
+	}
+	else if (pid > 0)
+	{
+		signal_ignore();
+		terminated_pid = wait(&status);
+		signal_interruped(status);
+		if (terminated_pid == pid)
+		{
+			cmd_args->which_cmd = 2;
 			if (WIFEXITED(status))
 				parent(cmd_args, p_fd);
 		}
@@ -83,13 +107,14 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 	pid_t	terminated_pid;
 	int		status;
 
-	cmd_by_pipe(rl, cmd_args);
 	create_fork(&pid);
+	cmd_by_pipe(rl, cmd_args);
 	if (pid == 0)
 	{
-		// Create a grandchild
-		if (cmd_args->pipe_c > 0)
-			another_child(cmd_args);
+		if (cmd_args->pipe_c == 1)
+			second_child(cmd_args);
+		else if (cmd_args->pipe_c == 2)
+			third_child(cmd_args);
 		else
 			process_child(cmd_args);
 	}
@@ -102,7 +127,7 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 		{
 			if (WIFEXITED(status))
 			{
-				process_parent(rl, cmd_args, status);
+				process_parent(cmd_args, status);
 				free(rl);
 			}
 		}

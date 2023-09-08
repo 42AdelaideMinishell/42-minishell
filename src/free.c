@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:10:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 12:04:00 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/07 15:16:04 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	free_cmd1(t_cmd *cmd_args)
 	i = 0;
 	if (cmd_args->cmd_one)
 	{
-		printf("free1\n");
 		while (cmd_args->cmd_one[i])
 		{
 			free(cmd_args->cmd_one[i]);
@@ -51,7 +50,6 @@ void	free_cmd2(t_cmd *cmd_args)
 	i = 0;
 	if (cmd_args->cmd_two)
 	{
-		printf("free2\n");
 		while (cmd_args->cmd_two[i])
 		{
 			free(cmd_args->cmd_two[i]);
@@ -69,7 +67,6 @@ void	free_cmd3(t_cmd *cmd_args)
 	i = 0;
 	if (cmd_args->cmd_three)
 	{
-		printf("free3\n");
 		while (cmd_args->cmd_three[i])
 		{
 			free(cmd_args->cmd_three[i]);

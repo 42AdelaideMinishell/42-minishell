@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/07 14:09:58 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/08 09:59:25 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,42 +49,17 @@ typedef struct s_cmd {
 
 /* ------------------------------------------------------------ */
 
-// Initial command
-t_cmd	*initial_cmd(char **envp);
-
 // Path
 char	*find_path(char *name, char **envp);
 char	*get_path(char *cmd, char **envp);
 
 // Process
 void	handle_process(char *rl, t_cmd *cmd_args);
-void	process_parent(char *rl, t_cmd *cmd_args, int status);
+void	process_parent(t_cmd *cmd_args, int status);
 void	process_child(t_cmd *cmd_args);
 
 // Handle builtins
-int		handle_cd(char **split_cmd, t_cmd *cmd_args);
-int		handle_else(char **cmd, t_cmd *cmd_args);
-
-// Execute
-void	execute(t_cmd *cmd_args, int *fd);
-
-// Pipe
-void	create_pipe(int *fd);
-int		count_pipe(char *rl);
-int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int order);
-void	cmd_by_pipe(char *rl, t_cmd *cmd_args);
-
-// Fork
-void	create_fork(pid_t *pid);
-
-// Handle builtins
 void	process_cd(char **split_cmd, t_cmd *cmd_args);
-
-// Initial command
-t_cmd	*initial_cmd(char **envp);
-
-// Memory
-void	free_container(char **temp);
 
 /* ------------------------------------------------------------ */
 
@@ -100,7 +75,11 @@ void	signal_interruped(int status);
 
 /* ------------------------------------------------------------ */
 
+// Initial command
+t_cmd	*initial_cmd(char **envp);
+
 // Pipe
+void	create_pipe(int *fd);
 int		count_pipe(char *rl);
 int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int order);
 void	cmd_by_pipe(char *rl, t_cmd *cmd_args);
@@ -111,6 +90,9 @@ int		count_cmd(char **split_cmd);
 int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int cmd_nbr);
 void	cmd_by_pipe(char *rl, t_cmd *cmd_args);
 char	**get_cmd(t_cmd *cmd_args);
+
+// Fork
+void	create_fork(pid_t *pid);
 
 // Memory
 void	free_cmd1(t_cmd *cmd_args);
@@ -123,6 +105,7 @@ void	free_container(char **temp);
 void	argc_error(int argc);
 void	fork_error(pid_t pid);
 void	result_error(int result, t_cmd *cmd_args);
+void	cmd_init_error(t_cmd *cmd_args);
 
 /* ------------------------------------------------------------ */
 
