@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:11:46 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 13:44:12 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/08 14:32:41 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int cmd_nbr)
 	}
 	else if (cmd_nbr == 3)
 	{
-		i++;
 		cmd_args->cmd_three = malloc(sizeof(char *) * (count_cmd(split_cmd) + 1));
 		while (split_cmd[i] && ft_strncmp(split_cmd[i], "|", 2) != 0)
 		{
