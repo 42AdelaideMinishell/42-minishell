@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/08 23:45:17 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/09 21:34:19 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,14 @@ void	child(t_cmd *cmd_args, int *pipe_one)
 
 void	parent(t_cmd *cmd_args, int *pipe_one, int *pipe_two)
 {
-	if (cmd_args->pipe_c == 2)
+	//(void)pipe_two;
+	if (cmd_args->pipe_c == 1)
+	{
+		close(pipe_one[1]);
+		dup2(pipe_one[0], STDIN_FILENO);
+		close(pipe_one[0]);
+	}
+	else
 	{
 		close(pipe_one[1]);
 		dup2(pipe_one[0], STDIN_FILENO);
@@ -30,12 +37,6 @@ void	parent(t_cmd *cmd_args, int *pipe_one, int *pipe_two)
 		close(pipe_two[0]);
 		dup2(pipe_two[1], STDOUT_FILENO);
 		close(pipe_two[1]);
-	}
-	else
-	{
-		close(pipe_one[1]);
-		dup2(pipe_one[0], STDIN_FILENO);
-		close(pipe_one[0]);
 	}
 	one_cmd_process(cmd_args);
 }

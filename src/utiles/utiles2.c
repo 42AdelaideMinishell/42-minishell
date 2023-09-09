@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:11:46 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/08 14:32:41 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/09 22:04:53 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int cmd_nbr)
 	}
 	else if (cmd_nbr == 3)
 	{
+		i++;
 		cmd_args->cmd_three = malloc(sizeof(char *) * (count_cmd(split_cmd) + 1));
 		while (split_cmd[i] && ft_strncmp(split_cmd[i], "|", 2) != 0)
 		{
@@ -79,7 +80,7 @@ void	cmd_by_pipe(char *rl, t_cmd *cmd_args)
 	cmd_args->pipe_c = count_pipe(rl);
 	while (cmd_args->pipe_c >= 0)
 	{
-		i += separate_pipe_cmd(split_cmd, cmd_args, i, cmd_nbr);
+		i = separate_pipe_cmd(split_cmd, cmd_args, i, cmd_nbr);
 		cmd_nbr++;
 		cmd_args->pipe_c--;
 	}
