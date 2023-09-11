@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:11:06 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/11 11:35:21 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/11 15:09:49 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static char	*dollar_cmd(char *cmd, t_cmd *cmd_args)
 	char	*sub;
 
 	tem = cmd;
+	// printf("%s\n", cmd);
 	while (*tem)
 	{
 		if (*tem == '$' && *(tem + 1) != '\0')

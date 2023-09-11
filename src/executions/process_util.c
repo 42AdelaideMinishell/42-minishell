@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_util.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:14:24 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/11 11:06:28 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/11 16:05:01 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	one_cmd_process(t_cmd *cmd_args)
 		|| ft_strncmp(cmd_args->cmd_one[0], "exit", ft_strlen(cmd_args->cmd_one[0])) == 0)
 		exit(0);
 // Sigle common should be handle
-	if (ft_strncmp(cmd_args->cmd_one[0], "echo", ft_strlen(cmd_args->cmd_one[0])) == 0)
-		process_echo(cmd, cmd_args);
+	// if (ft_strncmp(cmd_args->cmd_one[0], "echo", ft_strlen(cmd_args->cmd_one[0])) == 0)
+	// 	process_echo(cmd, cmd_args);
 	if (ft_strncmp(cmd_args->cmd_one[0], "exit", ft_strlen(cmd_args->cmd_one[0])) == 0)
 		exit(0);
 	chdir(cmd_args->abs_path);
