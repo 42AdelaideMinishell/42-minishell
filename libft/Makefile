@@ -14,17 +14,20 @@ NAME = libft.a
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	${AR} ${NAME} ${OBJS}
-	${LIB} ${NAME}
+	@${AR} ${NAME} ${OBJS}
+	@${LIB} ${NAME}
+	@echo "Libft create successfully"
 
 .c.o:
-	${CC} ${CFLAGS} -I ${INCS} ${SRCS} -c
+	@${CC} ${CFLAGS} -I ${INCS} ${SRCS} -c
 
 clean:
-	${RM} ${OBJS}
+	@${RM} ${OBJS}
+	@echo "Delete obj files successfully"
 
 fclean: clean
-	${RM} ${NAME}
+	@${RM} ${NAME}
+	@echo "Delete library file successfully"
 
 re: fclean all
 
