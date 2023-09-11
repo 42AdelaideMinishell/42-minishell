@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   initial_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:20:54 by jlyu              #+#    #+#             */
 /*   Updated: 2023/09/11 11:03:32 by jlyu             ###   ########.fr       */

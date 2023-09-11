@@ -56,8 +56,8 @@ char	*get_path(char *cmd, char **envp);
 
 // Process
 void	handle_process(char *rl, t_cmd *cmd_args);
+void	one_cmd_process(t_cmd *cmd_args);
 void	process_parent(t_cmd *cmd_args, int status);
-void	process_child(t_cmd *cmd_args);
 
 // Handle builtins
 void	process_cd(char **split_cmd, t_cmd *cmd_args);
@@ -72,9 +72,9 @@ void	new_term(void);
 void	old_term(int get_set, struct termios *old_term);
 
 // Signal
-void	signal_handler(int signum);
 void	init_signal(void);
-void	signal_ignore(void);
+void	ignore_signal(void);
+void	signal_handler(int signum);
 void	signal_interruped(int status);
 
 /* ------------------------------------------------------------ */
