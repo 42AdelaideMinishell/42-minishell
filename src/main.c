@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 16:35:24 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/11 11:03:44 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	run_shell(t_cmd *cmd_args)
 {
 	char	*rl;
 
-	while (1)
+	while (cmd_args->exit_flag)
 	{
 		rl = readline("🟢  4️⃣ 2️⃣ minishell % ");
 		if (!rl)

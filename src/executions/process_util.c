@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:14:24 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/11 10:01:08 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/11 11:06:28 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,19 @@ void	process_child(t_cmd *cmd_args)
 	char	*path;
 
 	cmd = get_cmd(cmd_args);
-	if (ft_strncmp(cmd_args->cmd_one[0], "cd", sizeof(cmd_args->cmd_one[0])) == 0
-		&& (ft_strncmp(cmd_args->cmd_one[1], "-", sizeof(cmd_args->cmd_one[1])) == 0
-			|| ft_strncmp(cmd_args->cmd_one[1], "~", sizeof(cmd_args->cmd_one[1])) == 0)
+	if (ft_strncmp(cmd_args->cmd_one[0], "cd", ft_strlen(cmd_args->cmd_one[0])) == 0
+		&& (ft_strncmp(cmd_args->cmd_one[1], "-", ft_strlen(cmd_args->cmd_one[1])) == 0
+			|| ft_strncmp(cmd_args->cmd_one[1], "~", ft_strlen(cmd_args->cmd_one[1])) == 0)
 		&& !cmd_args->cmd_one[2])
 		exit(0);
-	if (ft_strncmp(cmd_args->cmd_one[0], "unset", sizeof(cmd_args->cmd_one[0])) == 0
-		|| ft_strncmp(cmd_args->cmd_one[0], "export", sizeof(cmd_args->cmd_one[0])) == 0
-		|| ft_strncmp(cmd_args->cmd_one[0], "exit", sizeof(cmd_args->cmd_one[0])) == 0)
+	if (ft_strncmp(cmd_args->cmd_one[0], "unset", ft_strlen(cmd_args->cmd_one[0])) == 0
+		|| ft_strncmp(cmd_args->cmd_one[0], "export", ft_strlen(cmd_args->cmd_one[0])) == 0
+		|| ft_strncmp(cmd_args->cmd_one[0], "exit", ft_strlen(cmd_args->cmd_one[0])) == 0)
+		exit(0);
+// Sigle common should be handle
+	if (ft_strncmp(cmd_args->cmd_one[0], "echo", ft_strlen(cmd_args->cmd_one[0])) == 0)
+		process_echo(cmd, cmd_args);
+	if (ft_strncmp(cmd_args->cmd_one[0], "exit", ft_strlen(cmd_args->cmd_one[0])) == 0)
 		exit(0);
 	chdir(cmd_args->abs_path);
 	path = get_path(cmd[0], cmd_args->envp);
@@ -42,12 +47,14 @@ void	process_parent(t_cmd *cmd_args, int status)
 	if (status != 0)
 		return ;
 	cmd = get_cmd(cmd_args);
-	if (ft_strncmp(cmd[0], "cd", sizeof(cmd[0])) == 0)
+	if (ft_strncmp(cmd[0], "cd", ft_strlen(cmd[0])) == 0)
 		process_cd(cmd, cmd_args);
-	if (ft_strncmp(cmd[0], "unset", sizeof(cmd[0])) == 0)
+	if (ft_strncmp(cmd[0], "unset", ft_strlen(cmd[0])) == 0)
 		process_unset(cmd, cmd_args);
-	if (ft_strncmp(cmd[0], "export", sizeof(cmd[0])) == 0)
+	if (ft_strncmp(cmd[0], "export", ft_strlen(cmd[0])) == 0)
 		process_export(++cmd, cmd_args);
+	if (ft_strncmp(cmd[0], "exit", ft_strlen(cmd[0])) == 0)
+		cmd_args->exit_flag = 0;
 	// int i = -1;
 	// while (cmd_args->envp[++i])
 	// 	printf("%s\n", cmd_args->envp[i]);
