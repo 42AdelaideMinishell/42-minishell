@@ -13,7 +13,7 @@
 #include "../../inc/minishell.h"
 
 // tries to run the command, if it doesn't work, returns the error message.
-void	process_child(t_cmd *cmd_args)
+void	one_cmd_process(t_cmd *cmd_args)
 {
 	char	**cmd;
 	int		result;

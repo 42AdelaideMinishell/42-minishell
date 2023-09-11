@@ -6,63 +6,62 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/08 09:18:31 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/09 21:34:19 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	child(t_cmd *cmd_args, int *p_fd)
+void	child(t_cmd *cmd_args, int *pipe_one)
 {
-	close(p_fd[0]);
-	dup2(p_fd[1], STDOUT_FILENO);
-	close(p_fd[1]);
-	process_child(cmd_args);
+	close(pipe_one[0]);
+	dup2(pipe_one[1], STDOUT_FILENO);
+	close(pipe_one[1]);
+	one_cmd_process(cmd_args);
 }
 
-// Todo
-void	parent(t_cmd *cmd_args, int *p_fd)
+void	parent(t_cmd *cmd_args, int *pipe_one, int *pipe_two)
 {
-	if (cmd_args->pipe_c > 1)
+	//(void)pipe_two;
+	if (cmd_args->pipe_c == 1)
 	{
-		close(p_fd[0]);
-		dup2(p_fd[1], STDOUT_FILENO);
-		close(p_fd[1]);
+		close(pipe_one[1]);
+		dup2(pipe_one[0], STDIN_FILENO);
+		close(pipe_one[0]);
 	}
 	else
 	{
-		close(p_fd[1]);
-		dup2(p_fd[0], STDIN_FILENO);
-		close(p_fd[0]);
+		close(pipe_one[1]);
+		dup2(pipe_one[0], STDIN_FILENO);
+		close(pipe_one[0]);
+		close(pipe_two[0]);
+		dup2(pipe_two[1], STDOUT_FILENO);
+		close(pipe_two[1]);
 	}
-	process_child(cmd_args);
+	one_cmd_process(cmd_args);
 }
 
-void	second_child(t_cmd *cmd_args)
+void	two_cmd_process(t_cmd *cmd_args, int *pipe_two)
 {
-	int		p_fd[2];
+	int		pipe_one[2];
 	pid_t	pid;
 	int		status;
 	pid_t	terminated_pid;
 
-	if (pipe(p_fd) == -1)
-		exit(1);
-	pid = fork();
-	fork_error(pid);
+	create_pipe(pipe_one);
+	create_fork(&pid);
 	if (pid == 0)
-	{
-		child(cmd_args, p_fd);
-	}
+		child(cmd_args, pipe_one);
 	else if (pid > 0)
 	{
-		signal_ignore();
+		ignore_signal();
 		terminated_pid = wait(&status);
 		signal_interruped(status);
 		if (terminated_pid == pid)
 		{
 			cmd_args->which_cmd = 1;
 			if (WIFEXITED(status))
-				parent(cmd_args, p_fd);
+				parent(cmd_args, pipe_one, pipe_two);
 		}
 		else
 			perror("pid error\n");
@@ -70,30 +69,28 @@ void	second_child(t_cmd *cmd_args)
 	exit(0);
 }
 
-void	third_child(t_cmd *cmd_args)
+void	three_cmd_process(t_cmd *cmd_args)
 {
-	int		p_fd[2];
+	int		pipe[2];
 	pid_t	pid;
 	int		status;
 	pid_t	terminated_pid;
 
-	create_pipe(p_fd);
-	pid = fork();
-	fork_error(pid);
+	create_pipe(pipe);
+	create_fork(&pid);
 	if (pid == 0)
-	{
-		second_child(cmd_args);
-	}
+		two_cmd_process(cmd_args, pipe);
 	else if (pid > 0)
 	{
-		signal_ignore();
+		ignore_signal();
 		terminated_pid = wait(&status);
 		signal_interruped(status);
 		if (terminated_pid == pid)
 		{
 			cmd_args->which_cmd = 2;
+			cmd_args->pipe_c = 1;
 			if (WIFEXITED(status))
-				parent(cmd_args, p_fd);
+				parent(cmd_args, pipe, NULL);
 		}
 		else
 			perror("pid error\n");
@@ -108,28 +105,25 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 	int		status;
 
 	create_fork(&pid);
-	cmd_by_pipe(rl, cmd_args);
 	if (pid == 0)
 	{
-		if (cmd_args->pipe_c == 1)
-			second_child(cmd_args);
-		else if (cmd_args->pipe_c == 2)
-			third_child(cmd_args);
+		if (cmd_args->pipe_c == 0)
+			one_cmd_process(cmd_args);
+		else if (cmd_args->pipe_c == 1)
+			two_cmd_process(cmd_args, NULL);
 		else
-			process_child(cmd_args);
+			three_cmd_process(cmd_args);
 	}
 	else if (pid > 0)
 	{
-		signal_ignore();
+		ignore_signal();
 		terminated_pid = wait(&status);
 		signal_interruped(status);
 		if (terminated_pid == pid)
 		{
+			free(rl);
 			if (WIFEXITED(status))
-			{
 				process_parent(cmd_args, status);
-				free(rl);
-			}
 		}
 		else
 			perror("pid error\n");

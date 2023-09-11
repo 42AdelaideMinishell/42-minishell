@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:31 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 10:20:38 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/08 23:32:36 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	init_signal(void)
 	signal(SIGQUIT, signal_handler);
 }
 
-void	signal_ignore(void)
+void	ignore_signal(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
