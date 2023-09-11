@@ -6,7 +6,7 @@
 /*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/08 15:57:32 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/11 11:03:13 by jlyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_cmd {
 	char	**cmd_one;
 	char	**cmd_two;
 	char	**cmd_three;
+	int		exit_flag;
 }	t_cmd;
 
 // Terminal control attributes
@@ -62,6 +63,7 @@ void	process_child(t_cmd *cmd_args);
 void	process_cd(char **split_cmd, t_cmd *cmd_args);
 void	process_unset(char **split_cmd, t_cmd *cmd_args);
 void	process_export(char **split_cmd, t_cmd *cmd_args);
+void	process_echo(char **split_cmd, t_cmd *cmd_args);
 
 /* ------------------------------------------------------------ */
 
