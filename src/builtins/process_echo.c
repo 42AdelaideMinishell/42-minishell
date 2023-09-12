@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:11:06 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/11 15:09:49 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/12 22:39:36 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,13 @@ static char	*dollar_cmd(char *cmd, t_cmd *cmd_args)
 	char	*sub;
 
 	tem = cmd;
-	// printf("%s\n", cmd);
 	while (*tem)
 	{
+		if (*tem == '\'' && *(tem + 1) == '$')
+		{
+			printf("%s\n", (tem + 1));
+			exit(0);
+		}
 		if (*tem == '$' && *(tem + 1) != '\0')
 		{
 			tem++;
