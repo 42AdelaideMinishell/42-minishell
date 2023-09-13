@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:20:54 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/11 11:03:32 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/12 17:09:48 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,6 @@ static char	*ini_pwd(void)
 	if (absolute_path == NULL)
 		perror("getcwd");
 	return (absolute_path);
-}
-
-int	count_pipe(char *rl)
-{
-	int	i;
-
-	i = 0;
-	while (*rl)
-	{
-		if (*rl == '|')
-			i++;
-		rl++;
-	}
-	return (i);
 }
 
 char	**ini_envp(char **envp)
@@ -68,11 +54,10 @@ t_cmd	*initial_cmd(char **envp)
 	cmd_args->pre_path = ini_pwd();
 	cmd_args->home_path = getenv("HOME");
 	cmd_args->envp = ini_envp(envp);
-	cmd_args->pipe_c = 0;
-	cmd_args->which_cmd = 0;
-	cmd_args->cmd_one = NULL;
-	cmd_args->cmd_two = NULL;
-	cmd_args->cmd_three = NULL;
+	cmd_args->pipe_count = 0;
+	cmd_args->cmd_order = 0;
+	cmd_args->cmd = NULL;
+	cmd_args->cur_cmd = NULL;
 	if (cmd_args->abs_path == NULL
 		|| cmd_args->home_path == NULL)
 	{
