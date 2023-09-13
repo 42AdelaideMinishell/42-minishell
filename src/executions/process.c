@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/13 10:45:55 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/13 14:40:12 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,53 +99,6 @@
 //}
 
 // handles redirections and pipes
-// /////Overwrite example
-//#define BUFFER_SIZE 1025
-//int	main(void)
-//{
-//	pid_t	pid;
-//	int		p_fd[2];
-//	char 	*command[] = {"echo", "Hello, world!", NULL};
-//	char 	buffer[BUFFER_SIZE];
-//	int		bytes;
-//    char 	*command_path = "/bin/echo";
-//	int 	fd = open("a", O_CREAT | O_RDWR | O_TRUNC, 0644);
-//	if (fd == -1)
-//	{
-//		perror("open");
-//        exit(1);
-//	}
-//	pipe(p_fd);
-//	pid = fork();
-//	if (pid == 0)
-//	{
-//		printf("Hello from child\n");
-//		close(p_fd[0]);
-//		dup2(p_fd[1], STDOUT_FILENO);
-//		if (execve(command_path, command, NULL) == -1)
-//		{
-//			perror("execve");
-//			exit(1);
-//		}
-//	}
-//	else if (pid > 0)
-//	{
-//		wait(NULL);
-//		close(p_fd[1]);
-//		dup2(p_fd[0], STDIN_FILENO);
-//		printf("Hello from parent\n");
-//		bytes = read(p_fd[0], buffer, BUFFER_SIZE - 1);
-//		printf("bytes - %d\n", bytes);
-//		while (bytes > 0)
-//		{
-//			buffer[bytes] = '\0';
-//			write(fd, buffer, bytes);
-//			bytes = read(p_fd[0], buffer, BUFFER_SIZE - 1);
-//		}
-//	}
-//	return (0);
-//}
-
 // TODO - find a better way to handle pipes and redirection
 void	handle_pipe_redirection(t_cmd *cmd_args)
 {
@@ -154,9 +107,9 @@ void	handle_pipe_redirection(t_cmd *cmd_args)
 	int		status;
 	pid_t	terminated_pid;
 
-	if (cmd_args->pipe_count == 0)
+	if (cmd_args->p_re_count == 0)
 		cmd_process(cmd_args);
-	else if (cmd_args->cmd_order < cmd_args->pipe_count)
+	else if (cmd_args->cmd_order < cmd_args->p_re_count)
 	{
 		cmd_args->cmd_order++;
 		create_pipe(pipe);
@@ -180,6 +133,8 @@ void	handle_pipe_redirection(t_cmd *cmd_args)
 	exit(0);
 }
 
+// -------------// -------------// -------------// -------------
+
 void	handle_process(char *rl, t_cmd *cmd_args)
 {
 	pid_t	pid;
@@ -188,7 +143,10 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 
 	create_fork(&pid);
 	if (pid == 0)
-		cmd_process(cmd_args);
+		if (cmd_args->p_re_count > 0)
+			overwrite_append(cmd_args);
+		else
+			cmd_process(cmd_args);
 	else if (pid > 0)
 	{
 		ignore_signal();
@@ -200,10 +158,6 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 			if (WIFEXITED(status))
 				process_parent(cmd_args, status);
 		}
-		else
-			perror("pid error\n");
 	}
-	free_container(cmd_args->cmd);
-	free_container(cmd_args->cur_cmd);
 	init_signal();
 }

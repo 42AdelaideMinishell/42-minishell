@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/12 22:53:22 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/13 14:46:40 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ typedef struct s_cmd {
 	char	*abs_path;
 	char	*pre_path;
 	char	**envp;
-	int		pipe_count;
+	int		p_re_count;
 	int		cmd_order;
 	char	**cmd;
 	char	**cur_cmd;
 	int		exit_flag;
 }	t_cmd;
+
+#define BUFFER_SIZE 1025
 
 // Terminal control attributes
 # define GET 1
@@ -46,6 +48,10 @@ typedef struct s_cmd {
 # define SPACE ' '
 # define SINGLE_Q '\''
 # define DOUBLE_Q '\"'
+
+// Redirection
+# define OVERWRITE 0
+# define APPEND 1
 
 /* ------------------------------------------------------------ */
 
@@ -58,11 +64,14 @@ void	handle_process(char *rl, t_cmd *cmd_args);
 void	cmd_process(t_cmd *cmd_args);
 void	process_parent(t_cmd *cmd_args, int status);
 
-// Handle builtins
+// Builtins
 void	process_cd(char **split_cmd, t_cmd *cmd_args);
 void	process_unset(char **split_cmd, t_cmd *cmd_args);
 void	process_export(char **split_cmd, t_cmd *cmd_args);
 void	process_echo(char **split_cmd, t_cmd *cmd_args);
+
+// Redirections
+void	overwrite_append(t_cmd *cmd_args);
 
 // Terminal input output setting
 void	new_term(void);
@@ -79,7 +88,7 @@ t_cmd	*initial_cmd(char **envp);
 
 // Pipe
 void	create_pipe(int *fd);
-int		count_pipe(char **split_cmd);
+int		count_pipe_redirection(char **split_cmd);
 
 // Utiles
 char	**split_cmd(char const *s);
@@ -100,6 +109,7 @@ void	argc_error(int argc);
 void	fork_error(pid_t pid);
 void	result_error(int result, t_cmd *cmd_args);
 void	cmd_init_error(t_cmd *cmd_args);
+void	open_error(int fd);
 
 /* ------------------------------------------------------------ */
 

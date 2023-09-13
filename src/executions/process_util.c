@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:14:24 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/12 22:53:41 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/13 14:15:43 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	cmd_process(t_cmd *cmd_args)
 		|| ft_strncmp(cmd_args->cur_cmd[0], "export", ft_strlen(cmd_args->cur_cmd[0])) == 0
 		|| ft_strncmp(cmd_args->cur_cmd[0], "exit", ft_strlen(cmd_args->cur_cmd[0])) == 0)
 		exit(0);
-	 if (ft_strncmp(cmd_args->cur_cmd[0], "echo", ft_strlen(cmd_args->cur_cmd[0])) == 0)
+	if (ft_strncmp(cmd_args->cur_cmd[0], "echo", ft_strlen(cmd_args->cur_cmd[0])) == 0)
 	 	process_echo(cmd_args->cur_cmd, cmd_args);
 	if (ft_strncmp(cmd_args->cur_cmd[0], "exit", ft_strlen(cmd_args->cur_cmd[0])) == 0)
 		exit(0);

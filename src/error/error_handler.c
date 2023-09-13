@@ -6,11 +6,20 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:20 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/12 17:07:36 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/13 14:27:33 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
+
+void	open_error(int fd)
+{
+	if (fd == -1)
+	{
+		perror("open");
+		exit(1);
+	}
+}
 
 void	argc_error(int argc)
 {
