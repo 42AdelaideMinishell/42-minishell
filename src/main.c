@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/12 16:08:48 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/13 10:46:05 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static void	run_shell(t_cmd *cmd_args)
 		if (rl[0] == '\0')
 			continue ;
 		add_history(rl);
+		cmd_args->cmd = split_cmd(rl);
+		cmd_args->pipe_count = count_pipe(cmd_args->cmd);
+		cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
 		// creates child pid to run the command and exits after wait
 		handle_process(rl, cmd_args);
 	}

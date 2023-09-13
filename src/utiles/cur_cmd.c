@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:11:46 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/12 21:51:53 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/13 10:48:19 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ char	**choose_cur_cmd(char **cmd, int cmd_order)
 		cmd++;
 		i++;
 	}
+	result[i] = NULL;
 	return (result);
 }
 

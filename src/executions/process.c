@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/12 23:17:50 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/13 10:45:55 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,9 +186,6 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 	pid_t	terminated_pid;
 	int		status;
 
-	cmd_args->cmd = split_cmd(rl);
-	cmd_args->pipe_count = count_pipe(cmd_args->cmd);
-	cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
 	create_fork(&pid);
 	if (pid == 0)
 		cmd_process(cmd_args);
@@ -206,5 +203,7 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 		else
 			perror("pid error\n");
 	}
+	free_container(cmd_args->cmd);
+	free_container(cmd_args->cur_cmd);
 	init_signal();
 }
