@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   overwrite.c                                        :+:      :+:    :+:   */
+/*   overwrite_append.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/11 14:07:14 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/13 14:54:22 by jaeshin          ###   ########.fr       */
+/*   Created: 2023/09/13 17:01:55 by jaeshin           #+#    #+#             */
+/*   Updated: 2023/09/13 17:07:44 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	get_redirection(char **cmd)
 			return (APPEND);
 		i++;
 	}
-	perror("getting redirection");
+	perror("getting redirection\n");
 	return (-1);
 }
 
@@ -117,6 +117,7 @@ void	overwrite_append(t_cmd *cmd_args)
 				write(fd, buffer, bytes);
 				bytes = read(p_fd[0], buffer, BUFFER_SIZE - 1);
 			}
+			close(fd);
 		}
 		else
 			perror("pid error\n");
