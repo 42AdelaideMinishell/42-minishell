@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/13 14:46:40 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/14 12:27:50 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,13 @@ typedef struct s_cmd {
 // Redirection
 # define OVERWRITE 0
 # define APPEND 1
+# define SEND 2
+# define SEND_DOC 3
 
 /* ------------------------------------------------------------ */
+
+// Initial command
+t_cmd	*initial_cmd(char **envp);
 
 // Path
 char	*find_path(char *name, char **envp);
@@ -71,7 +76,16 @@ void	process_export(char **split_cmd, t_cmd *cmd_args);
 void	process_echo(char **split_cmd, t_cmd *cmd_args);
 
 // Redirections
-void	overwrite_append(t_cmd *cmd_args);
+void	redirection(t_cmd *cmd_args);
+void	overwrite(t_cmd *cmd_args);
+void	append(t_cmd *cmd_args);
+void	send(t_cmd *cmd_args);
+void	send_doc(t_cmd *cmd_args);
+
+// Redirection utiles
+char	*get_filename(char **cmd);
+int		open_helper(char **cmd, int condition);
+int		get_redirection(char **cmd);
 
 // Terminal input output setting
 void	new_term(void);
@@ -83,12 +97,12 @@ void	ignore_signal(void);
 void	signal_handler(int signum);
 void	signal_interruped(int status);
 
-// Initial command
-t_cmd	*initial_cmd(char **envp);
-
 // Pipe
 void	create_pipe(int *fd);
 int		count_pipe_redirection(char **split_cmd);
+
+// Fork
+void	create_fork(pid_t *pid);
 
 // Utiles
 char	**split_cmd(char const *s);
@@ -97,9 +111,6 @@ char	**choose_cur_cmd(char **cmd, int cmd_order);
 int		get_size_helper(char const *s, int i);
 int		move_index(char const *s);
 char const	*copy_helper(char const *s);
-
-// Fork
-void	create_fork(pid_t *pid);
 
 // Memory
 void	free_container(char **temp);

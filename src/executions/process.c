@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/13 14:40:12 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/14 12:27:57 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	handle_pipe_redirection(t_cmd *cmd_args)
 	exit(0);
 }
 
-// -------------// -------------// -------------// -------------
+// ----------------------------------------------------------
 
 void	handle_process(char *rl, t_cmd *cmd_args)
 {
@@ -144,7 +144,7 @@ void	handle_process(char *rl, t_cmd *cmd_args)
 	create_fork(&pid);
 	if (pid == 0)
 		if (cmd_args->p_re_count > 0)
-			overwrite_append(cmd_args);
+			redirection(cmd_args);
 		else
 			cmd_process(cmd_args);
 	else if (pid > 0)
