@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:15 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/07 10:10:42 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/12 17:08:24 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,27 @@ char	*get_path(char *cmd, char **envp)
 {
 	int		i;
 	char	**all_path;
-	char	**split_cmd;
+	char	**splited_cmd;
 	char	*one_path;
 	char	*exec;
 
 	i = 0;
 	all_path = ft_split(find_path("PATH", envp), ':');
-	split_cmd = space_quotes_split(cmd);
+	splited_cmd = split_cmd(cmd);
 	while (all_path[i])
 	{
 		one_path = ft_strjoin(all_path[i], "/");
-		exec = ft_strjoin(one_path, split_cmd[0]);
+		exec = ft_strjoin(one_path, splited_cmd[0]);
 		free(one_path);
 		if (access(exec, F_OK | X_OK) == 0)
 		{
-			free_container(split_cmd);
+			free_container(splited_cmd);
 			return (exec);
 		}
 		free(exec);
 		i++;
 	}
 	free_container(all_path);
-	free_container(split_cmd);
+	free_container(splited_cmd);
 	return (cmd);
 }

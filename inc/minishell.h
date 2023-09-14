@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlyu <jlyu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/11 11:03:13 by jlyu             ###   ########.fr       */
+/*   Updated: 2023/09/12 22:53:22 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ typedef struct s_cmd {
 	char	*abs_path;
 	char	*pre_path;
 	char	**envp;
-	int		pipe_c;
-	int		which_cmd;
-	char	**cmd_one;
-	char	**cmd_two;
-	char	**cmd_three;
+	int		pipe_count;
+	int		cmd_order;
+	char	**cmd;
+	char	**cur_cmd;
 	int		exit_flag;
 }	t_cmd;
 
@@ -44,9 +43,9 @@ typedef struct s_cmd {
 # define SET 2
 
 // Commands by pipes
-# define FIRST 1
-# define SECOND 2
-# define THIRD 3
+# define SPACE ' '
+# define SINGLE_Q '\''
+# define DOUBLE_Q '\"'
 
 /* ------------------------------------------------------------ */
 
@@ -56,7 +55,7 @@ char	*get_path(char *cmd, char **envp);
 
 // Process
 void	handle_process(char *rl, t_cmd *cmd_args);
-void	one_cmd_process(t_cmd *cmd_args);
+void	cmd_process(t_cmd *cmd_args);
 void	process_parent(t_cmd *cmd_args, int status);
 
 // Handle builtins
@@ -64,8 +63,6 @@ void	process_cd(char **split_cmd, t_cmd *cmd_args);
 void	process_unset(char **split_cmd, t_cmd *cmd_args);
 void	process_export(char **split_cmd, t_cmd *cmd_args);
 void	process_echo(char **split_cmd, t_cmd *cmd_args);
-
-/* ------------------------------------------------------------ */
 
 // Terminal input output setting
 void	new_term(void);
@@ -77,32 +74,25 @@ void	ignore_signal(void);
 void	signal_handler(int signum);
 void	signal_interruped(int status);
 
-/* ------------------------------------------------------------ */
-
 // Initial command
 t_cmd	*initial_cmd(char **envp);
 
 // Pipe
 void	create_pipe(int *fd);
-int		count_pipe(char *rl);
-int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int order);
-void	cmd_by_pipe(char *rl, t_cmd *cmd_args);
+int		count_pipe(char **split_cmd);
 
 // Utiles
-char	**space_quotes_split(char const *s);
+char	**split_cmd(char const *s);
 int		count_cmd(char **split_cmd);
-int		separate_pipe_cmd(char **split_cmd, t_cmd *cmd_args, int i, int cmd_nbr);
-void	cmd_by_pipe(char *rl, t_cmd *cmd_args);
-char	**get_cmd(t_cmd *cmd_args);
+char	**choose_cur_cmd(char **cmd, int cmd_order);
+int		get_size_helper(char const *s, int i);
+int		move_index(char const *s);
+char const	*copy_helper(char const *s);
 
 // Fork
 void	create_fork(pid_t *pid);
 
 // Memory
-void	free_cmd1(t_cmd *cmd_args);
-void	free_cmd2(t_cmd *cmd_args);
-void	free_cmd3(t_cmd *cmd_args);
-void	free_all_cmd(t_cmd *cmd_args);
 void	free_container(char **temp);
 
 // Error
