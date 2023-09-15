@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:11:46 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/13 11:03:37 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/15 16:50:52 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,39 @@ int	count_pipe_redirection(char **split_cmd)
 	return (count);
 }
 
-static int	cmd_size(char **split_cmd)
+static int	cmd_size(char **cmd)
 {
 	int	i;
 
 	i = 0;
-	while (split_cmd[i] && ft_strncmp(split_cmd[i], "|", 2) != 0)
+	if ((cmd[i] && ft_strncmp(cmd[i], ">", 2) == 0)
+		|| (cmd[i] && ft_strncmp(cmd[i], ">>", 3) == 0)
+		|| (cmd[i] && ft_strncmp(cmd[i], "<", 2) == 0)
+		|| (cmd[i] && ft_strncmp(cmd[i], "<<", 3) == 0))
+		i++;
+	while ((cmd[i] && ft_strncmp(cmd[i], "|", 2) != 0)
+		&& (cmd[i] && ft_strncmp(cmd[i], ">", 2) != 0)
+		&& (cmd[i] && ft_strncmp(cmd[i], ">>", 3) != 0)
+		&& (cmd[i] && ft_strncmp(cmd[i], "<", 2) != 0)
+		&& (cmd[i] && ft_strncmp(cmd[i], "<<", 3) != 0))
 		i++;
 	return (i);
 }
 
-static char	**choose_cur_cmd_helper(char **cmd, int cmd_order)
+static char	**choose_cur_cmd_helper(char **cmd, int *cmd_order)
 {
 	while (cmd_order > 0)
 	{
-		while (*cmd && ft_strncmp(*cmd, "|", 2) != 0)
+		if ((*cmd && ft_strncmp(*cmd, ">", 2) == 0)
+			|| (*cmd && ft_strncmp(*cmd, ">>", 3) == 0)
+			|| (*cmd && ft_strncmp(*cmd, "<", 2) == 0)
+			|| (*cmd && ft_strncmp(*cmd, "<<", 3) == 0))
+			cmd++;
+		while ((*cmd && ft_strncmp(*cmd, "|", 2) != 0)
+			&& (*cmd && ft_strncmp(*cmd, ">", 2) != 0)
+			&& (*cmd && ft_strncmp(*cmd, ">>", 3) != 0)
+			&& (*cmd && ft_strncmp(*cmd, "<", 2) != 0)
+			&& (*cmd && ft_strncmp(*cmd, "<<", 3) != 0))
 			cmd++;
 		if (*cmd && ft_strncmp(*cmd, "|", 2) == 0)
 			cmd++;
@@ -106,7 +124,7 @@ static char	**choose_cur_cmd_helper(char **cmd, int cmd_order)
 	return (cmd);
 }
 
-char	**choose_cur_cmd(char **cmd, int cmd_order)
+char	**choose_cur_cmd(char **cmd, int *cmd_order)
 {
 	int		i;
 	char	**result;
@@ -114,11 +132,16 @@ char	**choose_cur_cmd(char **cmd, int cmd_order)
 	i = 0;
 	cmd = choose_cur_cmd_helper(cmd, cmd_order);
 	result = malloc(sizeof(char *) * (cmd_size(cmd) + 1));
-	while (*cmd && ft_strncmp(*cmd, "|", 2) != 0)
+	while ((*cmd && ft_strncmp(*cmd, "|", 2) != 0))
 	{
 		result[i] = ft_strdup(*cmd);
 		cmd++;
 		i++;
+		if ((*cmd && ft_strncmp(*cmd, ">", 2) == 0)
+			|| (*cmd && ft_strncmp(*cmd, ">>", 3)) == 0
+			|| (*cmd && ft_strncmp(*cmd, "<", 2)) == 0
+			|| (*cmd && ft_strncmp(*cmd, "<<", 3)) == 0)
+			break ;
 	}
 	result[i] = NULL;
 	return (result);
@@ -127,6 +150,10 @@ char	**choose_cur_cmd(char **cmd, int cmd_order)
 // int	main(void)
 // {
 // 	char *temp[8] = {"cat", ">", "a", "|", "123qwer", "|", "123456", NULL};
-// 	int result = count_pipe_redirection(temp);
-// 	printf("reslut - %d\n", result);
+// 	char **result = choose_cur_cmd(temp, 3);
+// 	while (*result)
+// 	{
+// 		printf("reslut - %s\n", *result);
+// 		result++;
+// 	}
 // }
