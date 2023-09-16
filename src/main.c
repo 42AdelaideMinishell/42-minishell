@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/15 16:40:21 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/16 23:27:03 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void	run_shell(t_cmd *cmd_args)
 			continue ;
 		add_history(rl);
 		cmd_args->cmd = split_cmd(rl);
-		cmd_args->p_re_count = count_pipe_redirection(cmd_args->cmd);
+		//cmd_args->p_re_count = count_pipe_redirection(cmd_args->cmd);
+		cmd_args->p_count = count_pipe(cmd_args->cmd);
 		cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
 		handle_process(rl, cmd_args);
 		free_container(cmd_args->cmd);

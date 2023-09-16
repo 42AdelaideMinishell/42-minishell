@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/16 18:24:18 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/16 23:19:43 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_cmd {
 	char	*pre_path;
 	char	**envp;
 	int		p_re_count;
+	int		p_count;
 	int		cmd_order;
 	char	**cmd;
 	char	**cur_cmd;
@@ -50,10 +51,10 @@ typedef struct s_cmd {
 # define DOUBLE_Q '\"'
 
 // Redirection
-# define OVERWRITE 0
-# define APPEND 1
-# define SEND 2
-# define SEND_DOC 3
+# define OVERWRITE 1
+# define APPEND 2
+# define SEND 3
+# define SEND_DOC 4
 
 /* ------------------------------------------------------------ */
 
@@ -76,7 +77,7 @@ void	process_export(char **split_cmd, t_cmd *cmd_args);
 void	process_echo(char **split_cmd, t_cmd *cmd_args);
 
 // Redirections
-void	redirection(t_cmd *cmd_args);
+int		redirection(t_cmd *cmd_args);
 void	overwrite(t_cmd *cmd_args);
 void	append(t_cmd *cmd_args);
 void	send(t_cmd *cmd_args);
@@ -100,6 +101,7 @@ void	signal_interruped(int status);
 // Pipe
 void	create_pipe(int *fd);
 void	create_two_pipes(int *p_fd_a, int *p_fd_b);
+int		count_pipe(char **split_cmd);
 int		count_pipe_redirection(char **split_cmd);
 
 // Fork

@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:11:46 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/15 20:45:42 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/16 22:57:44 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,22 @@
 // 	}
 // 	return (0);
 // }
+
+int	count_pipe(char **split_cmd)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (split_cmd[i])
+	{
+		if (ft_strncmp(split_cmd[i], "|", 2) == 0)
+			count++;
+		i++;
+	}
+	return (count);
+}
 
 int	count_pipe_redirection(char **split_cmd)
 {

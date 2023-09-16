@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 11:36:17 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/14 12:28:44 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/16 20:45:47 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	get_redirection(char **cmd)
 			return (SEND_DOC);
 		i++;
 	}
-	perror("No redirection\n");
-	return (-1);
+	return (0);
 }
 
 char	*get_filename(char **cmd)
