@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:11:46 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/15 16:50:52 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/15 20:45:42 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	cmd_size(char **cmd)
 	return (i);
 }
 
-static char	**choose_cur_cmd_helper(char **cmd, int *cmd_order)
+static char	**choose_cur_cmd_helper(char **cmd, int cmd_order)
 {
 	while (cmd_order > 0)
 	{
@@ -124,7 +124,7 @@ static char	**choose_cur_cmd_helper(char **cmd, int *cmd_order)
 	return (cmd);
 }
 
-char	**choose_cur_cmd(char **cmd, int *cmd_order)
+char	**choose_cur_cmd(char **cmd, int cmd_order)
 {
 	int		i;
 	char	**result;

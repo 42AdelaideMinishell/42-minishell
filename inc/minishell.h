@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/15 16:37:36 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/16 18:24:18 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_cmd {
 	char	*pre_path;
 	char	**envp;
 	int		p_re_count;
-	int		*cmd_order;
+	int		cmd_order;
 	char	**cmd;
 	char	**cur_cmd;
 	int		exit_flag;
@@ -99,6 +99,7 @@ void	signal_interruped(int status);
 
 // Pipe
 void	create_pipe(int *fd);
+void	create_two_pipes(int *p_fd_a, int *p_fd_b);
 int		count_pipe_redirection(char **split_cmd);
 
 // Fork
@@ -107,7 +108,7 @@ void	create_fork(pid_t *pid);
 // Utiles
 char	**split_cmd(char const *s);
 int		count_cmd(char **split_cmd);
-char	**choose_cur_cmd(char **cmd, int *cmd_order);
+char	**choose_cur_cmd(char **cmd, int cmd_order);
 int		get_size_helper(char const *s, int i);
 int		move_index(char const *s);
 char const	*copy_helper(char const *s);

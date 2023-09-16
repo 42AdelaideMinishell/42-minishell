@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/15 17:01:12 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/16 18:47:17 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,82 +98,38 @@
 //	exit(0);
 //}
 
-
-
 // handles redirections and pipes
 void	handle_pipe_redirection(t_cmd *cmd_args)
 {
 	int		p_fd[2];
-	int		p_fd_2[2];
 	pid_t	pid;
 	int		status;
-	pid_t	terminated_pid;
 
-	create_pipe(p_fd);
-	create_pipe(p_fd_2);
 	if (cmd_args->p_re_count == 0)
 		cmd_process(cmd_args);
-	while (cmd_args->cur_cmd && *(cmd_args->cmd_order) < cmd_args->p_re_count)
+	while (cmd_args->cur_cmd && cmd_args->cmd_order <= cmd_args->p_re_count)
 	{
 		cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
-		cmd_args->cmd_order++;
-		printf("order - %d\n", *(cmd_args->cmd_order));
+		create_pipe(p_fd);
 		create_fork(&pid);
 		if (pid == 0)
 		{
-			if ((cmd_args->cmd_order - 1) == 0)
+			if (cmd_args->cmd_order < cmd_args->p_re_count)
 			{
 				close(p_fd[0]);
 				dup2(p_fd[1], STDOUT_FILENO);
-				cmd_process(cmd_args);
 			}
-			else if (*(cmd_args->cmd_order) < cmd_args->p_re_count)
-			{
-				close(p_fd_2[0]);
-				dup2(p_fd_2[1], STDOUT_FILENO);
-				cmd_process(cmd_args);
-			}
-			else
-				exit(0);
+			cmd_process(cmd_args);
 		}
 		else if (pid > 0)
 		{
-			cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
-			ignore_signal();
-			terminated_pid = wait(&status);
-			signal_interruped(status);
-			if (terminated_pid == pid)
+			waitpid(pid, &status, 0);
+			cmd_args->cmd_order++;
+			if (cmd_args->cmd_order <= cmd_args->p_re_count)
 			{
-				if (WIFEXITED(status))
-				{
-					if (cmd_args->p_re_count == 1)
-					{
-						printf("parent order - %d\n", *(cmd_args->cmd_order));
-						printf("last cmd1 - %s\n", cmd_args->cur_cmd[0]);
-						close(p_fd[1]);
-						dup2(p_fd[0], STDIN_FILENO);
-					}
-					else if (*(cmd_args->cmd_order) == cmd_args->p_re_count)
-					{
-						printf("parent order - %d\n", *(cmd_args->cmd_order));
-						printf("last cmd2 - %s\n", cmd_args->cur_cmd[0]);
-						close(p_fd_2[1]);
-						dup2(p_fd_2[0], STDIN_FILENO);
-					}
-					else
-					{
-						printf("parent order - %d\n", *(cmd_args->cmd_order));
-						printf("last cmd3 - %s\n", cmd_args->cur_cmd[0]);
-						close(p_fd[1]);
-						dup2(p_fd[0], STDIN_FILENO);
-						close(p_fd_2[0]);
-						dup2(p_fd_2[1], STDOUT_FILENO);
-					}
-					cmd_process(cmd_args);
-				}
+				close(p_fd[1]);
+				dup2(p_fd[0], STDIN_FILENO);
 			}
-			else
-				perror("pid error\n");
 		}
 	}
 	exit(0);
