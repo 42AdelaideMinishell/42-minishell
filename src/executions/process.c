@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:23 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/16 23:27:51 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/17 21:21:12 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,14 @@ void	handle_pipe_redirection(t_cmd *cmd_args)
 	pid_t	pid;
 	int		status;
 
-// TODO - echo input > a ----to be handled.
+// TODO - echo 123 > a ----to be handled.
 // number of process!
-	if (cmd_args->p_count == 0)
+	if (cmd_args->p_re_count == 0)
 		cmd_process(cmd_args);
-	while (cmd_args->cur_cmd && cmd_args->cmd_order <= cmd_args->p_count)
+	while (cmd_args->cur_cmd && cmd_args->cmd_order <= cmd_args->p_re_count)
 	{
 		cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
-		//printf("cmd - %s\n", cmd_args->cur_cmd[0]);
+		printf("cmd - %s\n", cmd_args->cur_cmd[0]);
 		create_pipe(p_fd);
 		create_fork(&pid);
 		if (pid == 0)
@@ -127,14 +127,14 @@ void	handle_pipe_redirection(t_cmd *cmd_args)
 		else if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
-			//if (get_redirection(cmd_args->cur_cmd))
-			//	cmd_args->p_count++;
 			cmd_args->cmd_order++;
-			if (cmd_args->cmd_order <= cmd_args->p_count)
+			if (cmd_args->cmd_order <= cmd_args->p_re_count)
 			{
 				close(p_fd[1]);
 				dup2(p_fd[0], STDIN_FILENO);
 			}
+			if (get_redirection(cmd_args->cur_cmd))
+				cmd_args->p_re_count--;
 		}
 	}
 	exit(0);

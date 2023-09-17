@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:11:46 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/16 22:57:44 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/17 18:38:15 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,10 @@ char	**choose_cur_cmd(char **cmd, int cmd_order)
 
 // int	main(void)
 // {
-// 	char *temp[8] = {"cat", ">", "a", "|", "123qwer", "|", "123456", NULL};
-// 	char **result = choose_cur_cmd(temp, 3);
+//	//< file1 <file2 cat file1 < file2 file2 > x >> y
+// 	//char *temp[40] = {"<", "file1", "<", "file2", "cat", "file1", "<", "file2", "file2", ">", "x", ">>", "y", NULL};
+// 	char *temp[40] = {"cat", ">", "a", NULL};
+// 	char **result = choose_cur_cmd(temp, 1);
 // 	while (*result)
 // 	{
 // 		printf("reslut - %s\n", *result);
