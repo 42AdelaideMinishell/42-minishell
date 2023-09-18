@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:23:29 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/12 21:51:58 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 12:17:58 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	get_size(char const *s)
 	size = 0;
 	while (s[i])
 	{
-		while (s[i] == SPACE)
+		while (s[i] == SPACE || s[i] == '\t')
 			i++;
 		if (s[i] != SPACE && s[i] != SINGLE_Q && s[i] != DOUBLE_Q)
 			i = get_size_helper(s, i);
@@ -110,7 +110,7 @@ char	**split_cmd(char const *rl)
 	char	**res;
 	int		size;
 
-	while (*rl == SPACE)
+	while (*rl == SPACE || *rl == '\t')
 		rl++;
 	size = get_size(rl);
 	res = malloc((size + 1) * sizeof(char *));

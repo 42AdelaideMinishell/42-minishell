@@ -6,11 +6,19 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/13 10:46:05 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:25:13 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	set_up_cmd(t_cmd *cmd_args, char *rl)
+{
+	cmd_args->cmd = split_cmd(rl);
+	cmd_args->p_re_count = count_pipe_redirection(cmd_args->cmd);
+	cmd_args->cmd_order = 0;
+	cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
+}
 
 static void	run_shell(t_cmd *cmd_args)
 {
@@ -24,11 +32,10 @@ static void	run_shell(t_cmd *cmd_args)
 		if (rl[0] == '\0')
 			continue ;
 		add_history(rl);
-		cmd_args->cmd = split_cmd(rl);
-		cmd_args->pipe_count = count_pipe(cmd_args->cmd);
-		cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
-		// creates child pid to run the command and exits after wait
+		set_up_cmd(cmd_args, rl);
 		handle_process(rl, cmd_args);
+		free_container(cmd_args->cmd);
+		free_container(cmd_args->cur_cmd);
 	}
 }
 
@@ -40,14 +47,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	argc_error(argc);
 	init_signal();
-	// termios
 	old_term(GET, &o_term);
 	new_term();
-	// Initial current working directory
 	cmd_args = initial_cmd(envp);
 	cmd_init_error(cmd_args);
 	run_shell(cmd_args);
-	// Gets back to original terminal setting
 	old_term(SET, &o_term);
 	free_container(cmd_args->envp);
 	free(cmd_args);
