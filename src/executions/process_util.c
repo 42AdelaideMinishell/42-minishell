@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 16:14:24 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/17 21:13:29 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:23:03 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,7 @@ void	process_parent(t_cmd *cmd_args, int status)
 	if (ft_strncmp(cmd_args->cur_cmd[0], "unset", ft_strlen(cmd_args->cur_cmd[0])) == 0)
 		process_unset(cmd_args->cur_cmd, cmd_args);
 	if (ft_strncmp(cmd_args->cur_cmd[0], "export", ft_strlen(cmd_args->cur_cmd[0])) == 0)
-		process_export(++cmd_args->cur_cmd, cmd_args);
+		process_export((cmd_args->cur_cmd + 1), cmd_args);
 	if (ft_strncmp(cmd_args->cur_cmd[0], "exit", ft_strlen(cmd_args->cur_cmd[0])) == 0)
 		cmd_args->exit_flag = 0;
-	// int i = -1;
-	// while (cmd_args->envp[++i])
-	// 	printf("%s\n", cmd_args->envp[i]);
 }

@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:33:08 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/16 23:19:43 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:15:09 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_cmd {
 	char	*pre_path;
 	char	**envp;
 	int		p_re_count;
-	int		p_count;
 	int		cmd_order;
 	char	**cmd;
 	char	**cur_cmd;

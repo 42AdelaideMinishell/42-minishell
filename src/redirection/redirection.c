@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 12:16:35 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/17 21:09:17 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:27:05 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	redirection(t_cmd *cmd_args)
 
 void	overwrite(t_cmd *cmd_args)
 {
-	char 	buffer[BUFFER_SIZE];
+	char	buffer[BUFFER_SIZE];
 	int		bytes;
-	int 	fd;
+	int		fd;
 
 	fd = open_helper(cmd_args->cur_cmd, OVERWRITE);
 	bytes = read(STDIN_FILENO, buffer, BUFFER_SIZE - 1);
@@ -48,9 +48,9 @@ void	overwrite(t_cmd *cmd_args)
 
 void	append(t_cmd *cmd_args)
 {
-	char 	buffer[BUFFER_SIZE];
+	char	buffer[BUFFER_SIZE];
 	int		bytes;
-	int 	fd;
+	int		fd;
 
 	fd = open_helper(cmd_args->cur_cmd, APPEND);
 	bytes = read(STDIN_FILENO, buffer, BUFFER_SIZE - 1);
@@ -66,9 +66,9 @@ void	append(t_cmd *cmd_args)
 
 void	send(t_cmd *cmd_args)
 {
-	char 	buffer[BUFFER_SIZE];
+	char	buffer[BUFFER_SIZE];
 	int		bytes;
-	int 	fd;
+	int		fd;
 
 	fd = open_helper(cmd_args->cur_cmd, SEND);
 	bytes = read(fd, buffer, BUFFER_SIZE - 1);
@@ -84,7 +84,7 @@ void	send(t_cmd *cmd_args)
 
 void	send_doc(t_cmd *cmd_args)
 {
-	char 	buffer[BUFFER_SIZE];
+	char	buffer[BUFFER_SIZE];
 	char	*chunk;
 	int		bytes;
 
@@ -93,7 +93,8 @@ void	send_doc(t_cmd *cmd_args)
 	while (bytes > 0)
 	{
 		buffer[bytes] = '\0';
-		if ((ft_strncmp(buffer, cmd_args->cur_cmd[1], ft_strlen(cmd_args->cur_cmd[1])) == 0)
+		if ((ft_strncmp(buffer, cmd_args->cur_cmd[1], \
+			ft_strlen(cmd_args->cur_cmd[1])) == 0)
 			&& (buffer[ft_strlen(cmd_args->cur_cmd[1])] == '\n'))
 			break ;
 		chunk = ft_strjoin(chunk, buffer);
@@ -101,7 +102,7 @@ void	send_doc(t_cmd *cmd_args)
 	}
 	if (bytes == -1)
 		perror("read bytes\n");
-	if (cmd_args->cmd_order == cmd_args->p_count)
+	if (cmd_args->cmd_order == cmd_args->p_re_count)
 		write(STDIN_FILENO, chunk, BUFFER_SIZE);
 	else
 		write(STDOUT_FILENO, chunk, BUFFER_SIZE);

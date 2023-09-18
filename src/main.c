@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:24:20 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/17 20:20:01 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:25:13 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	set_up_cmd(t_cmd *cmd_args, char *rl)
 {
 	cmd_args->cmd = split_cmd(rl);
 	cmd_args->p_re_count = count_pipe_redirection(cmd_args->cmd);
-	cmd_args->p_count = count_pipe(cmd_args->cmd);
+	cmd_args->cmd_order = 0;
 	cmd_args->cur_cmd = choose_cur_cmd(cmd_args->cmd, cmd_args->cmd_order);
 }
 
@@ -47,14 +47,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	argc_error(argc);
 	init_signal();
-	// termios
 	old_term(GET, &o_term);
 	new_term();
-	// Initial current working directory
 	cmd_args = initial_cmd(envp);
 	cmd_init_error(cmd_args);
 	run_shell(cmd_args);
-	// Gets back to original terminal setting
 	old_term(SET, &o_term);
 	free_container(cmd_args->envp);
 	free(cmd_args);

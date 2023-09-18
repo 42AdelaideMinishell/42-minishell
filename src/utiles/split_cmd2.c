@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:19:17 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/12 20:33:19 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 12:20:11 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	get_size_helper(char const *s, int i)
 			i++;
 	}
 	while (s[i] && s[i] != SPACE)
+		i++;
+	while (s[i] && s[i] == SPACE)
 		i++;
 	return (i);
 }

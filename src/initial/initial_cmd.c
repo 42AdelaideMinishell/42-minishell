@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 12:20:54 by jlyu              #+#    #+#             */
-/*   Updated: 2023/09/16 23:19:57 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:15:00 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_cmd	*initial_cmd(char **envp)
 	cmd_args->home_path = getenv("HOME");
 	cmd_args->envp = ini_envp(envp);
 	cmd_args->p_re_count = 0;
-	cmd_args->p_count = 0;
 	cmd_args->cmd_order = 0;
 	cmd_args->cmd = NULL;
 	cmd_args->cur_cmd = NULL;
