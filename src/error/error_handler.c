@@ -6,11 +6,20 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 15:08:20 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/12 17:07:36 by jaeshin          ###   ########.fr       */
+/*   Updated: 2023/09/18 16:23:09 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
+
+void	open_error(int fd)
+{
+	if (fd == -1)
+	{
+		perror("open");
+		exit(1);
+	}
+}
 
 void	argc_error(int argc)
 {
@@ -39,7 +48,6 @@ void	result_error(int result, t_cmd *cmd_args)
 	{
 		ft_putstr_fd("🔴  4️⃣ 2️⃣ minishell: command not found: ", 2);
 		ft_putendl_fd(cmd_args->cur_cmd[0], 2);
-		// free_container(cmd_args->cmd_one);
 		exit(1);
 	}
 }

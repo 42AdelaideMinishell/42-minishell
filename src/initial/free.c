@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   overwrite.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/11 14:07:14 by jaeshin           #+#    #+#             */
-/*   Updated: 2023/09/11 14:54:38 by jaeshin          ###   ########.fr       */
+/*   Created: 2023/09/07 10:10:44 by jaeshin           #+#    #+#             */
+/*   Updated: 2023/09/18 16:15:46 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-// void	overwrite(t_cmd *cmd_args)
-// {
-	
-// }
+void	free_container(char **temp)
+{
+	int	i;
 
-// void	split_redirection(t_cmd *cmd_args)
-// {
-	
-// }
+	i = 0;
+	while (temp[i])
+	{
+		free(temp[i]);
+		i++;
+	}
+	free(temp);
+	temp = NULL;
+}
